@@ -1,44 +1,44 @@
 Writing Tests for RubyMotion Apps
 =================================
 
-This document describes how to write functional tests for an existing RubyMotion app. Tests provide a set of specifications an application is supposed to conform to and can be used to catch regressions after an unfortunate change in the code.
+이 문서는 이미 있는 RubyMotion앱을 어떻게 단위 테스트하는지에 대해 설명합니다. 테스트는 어플리케이션이 지켜야할 사양의 세트를 제공하며, 불행한 변경으로 인한 회귀(regression)를 잡을때도 사용됩니다.
 
 Getting Started
 ---------------
 
-RubyMotion integrates https://github.com/chneukirchen/bacon/[Bacon], a small clone of the popular http://rspec.info/[RSpec] framework written by https://github.com/chneukirchen[Christian Neukirchen].
+RubyMotion에서는 s://github.com/chneukirchen/bacon/[Bacon]을 쓸 수 있습니다. Bacon은 유명한 http://rspec.info/[RSpec] 프레임워크의 축소판 클론으로 https://github.com/chneukirchen[Christian Neukirchen]님이 개발했습니다.
 
-More specifically, RubyMotion uses a version of Bacon called https://github.com/alloy/MacBacon[MacBacon] which has been extended to integrate well with iOS. MacBacon is maintained by https://github.com/alloy[Eloy Duran].
+좀더 구체적으로 말하자면, RubyMotion은iOS용으로 확장된 https://github.com/alloy/MacBacon[MacBacon]이라는 버전을 사용하고 있습니다. MacBacon은 https://github.com/alloy[Eloy Duran]님이 관리하고 있습니다.
 
 Spec Files
 ~~~~~~~~~~
 
-Spec files are responsible to contain the tests of your project.
+Spec 파일에는 프로젝트의 테스트를 기술해야 합니다.
 
-Spec files are created under the 'spec' directory of a RubyMotion project.
+Spec 파일은 RubyMotion프로젝트의 'spec' 디랙토리의 밑에 작성합니다.
 
-By default, a RubyMotion project has a 'spec/main_spec.rb' file which contains a single test that ensures that the application has a window.
+기본설정의 RubyMotion프로젝트는 'spec/main_spec.rb' 파일이 있고, 이 파일에는 어플리케이션이 윈도우를 가지고있는지 확인하는 하나의 테스트가 적혀 있습니다.
 
 Spec Helpers
 ~~~~~~~~~~~~
 
-Spec helpers can be used to extend the testing framework, for instance by introducing a common set of classes or methods that will be used by the spec files. Spec helpers will be compiled and executed before the actual spec files.
+Spec helpers 는 클래스나 메소드를 정의해 테스팅 프레임워크를 확장하는데 사용할 수 있습니다. Spec helpers 는 스팩파일보다 먼저 컴파일되고 실행 됩니다.
 
-Spec helpers are created under the 'spec/helpers' directory of a RubyMotion project. An example could be 'spec/helpers/extension.rb'.
+Spec helpers 는 RubyMotion프로젝트의 'spec/helpers' 디랙토리 밑에 작성합니다. 예를들면 이런식이죠. 'spec/helpers/extension.rb'
 
-By default, a RubyMotion project has no spec helper.
+기본설정의 RubyMotion프로젝트는 spec helper를 가지고 있지 않습니다.
 
 Running the Tests
 ~~~~~~~~~~~~~~~~~
 
-The +spec+ Rake task can be used to run the test suite of a RubyMotion project.
+RubyMotion 프로젝트의 테스트 스위트를 실행하기 위해 Rake 테스크의 +spec+을 사용합니다.
 
 ----
 $ rake spec
 $ rake spec:device
 ----
 
-This command compiles a special version of your app that includes the spec framework, helpers and files and executes it in the simulator in the background.
+이 커맨드는 스팩 프래임워크, 헬퍼, 파일이 포함된 스페셜 버전의 앱을 컴파일하고 백그라운드의 시뮬레이터에서 엡을 실행 합니다.
 
 Once the specs are performed, the program yields back to the command-line prompt with a proper status code (+0+ in case of success, +1+ otherwise).
 
