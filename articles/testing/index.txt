@@ -24,7 +24,7 @@ Spec Helpers
 
 Spec helpers 는 클래스나 메소드를 정의해 테스팅 프레임워크를 확장하는데 사용할 수 있습니다. Spec helpers 는 스팩파일보다 먼저 컴파일되고 실행 됩니다.
 
-Spec helpers 는 RubyMotion프로젝트의 'spec/helpers' 디랙토리 밑에 작성합니다. 예를들면 이런식이죠. 'spec/helpers/extension.rb'
+Spec helpers 는 RubyMotion프로젝트의 'spec/helpers' 디랙토리 밑에 작성합니다. 예를 들면 이런식이죠. 'spec/helpers/extension.rb'
 
 기본설정의 RubyMotion프로젝트는 spec helper를 가지고 있지 않습니다.
 
@@ -38,18 +38,18 @@ $ rake spec
 $ rake spec:device
 ----
 
-이 커맨드는 스팩 프래임워크, 헬퍼, 파일이 포함된 스페셜 버전의 앱을 컴파일하고 백그라운드의 시뮬레이터에서 엡을 실행 합니다.
+이 커맨드는 스팩 프래임워크, 헬퍼, 파일이 포함된 스페셜 버전의 앱을 컴파일하고 백그라운드의 시뮬레이터에서 엡을 실행합니다.
 
-Once the specs are performed, the program yields back to the command-line prompt with a proper status code (+0+ in case of success, +1+ otherwise).
+일단 spec이 실행 되면, 프로그램은 커맨드라인 프롬프트에 스테이더스 코드(성공일 경우 +0+, 그외에는 +1+)를 돌려줍니다.
 
 Run Selected Spec Files
 ~~~~~~~~~~~~~~~~~~~~~~~
 
-Sometimes you may not want to run the entire test suite but only one or more isolated spec files.
+전체 스팩코드를 실행하는 대신 개별 spec 파일들을 실행하고 싶을때가 있습니다.
 
-The +files+ environment variable can be set to a series of comma-delimited patterns in order to filter the spec files that should be executed. Patterns can be either the basename of a spec file (without the file extension) or its path.
+실행해야 할 spec 파일을 필터링 하기 위해, 환경변수 +files+에 ","으로 구분된 일련의 패턴을 설정할 수 있습니다. 페턴은 spec 파일의 basename (확장자가 없는 파일명)이거나, 파일경로중 하나여야 합니다.
 
-As an example, the following command will only run the 'spec/foo_spec.rb' and 'spec/bar_spec.rb' files.
+예를 들어, 밑의 커맨드는 'spec/foo_spec.rb' 와 'spec/bar_spec.rb' 파일만 실행할 것입니다.
 
 ----
 $ rake spec files=foo_spec,spec/bar_spec.rb
@@ -58,7 +58,7 @@ $ rake spec files=foo_spec,spec/bar_spec.rb
 Output Format
 ~~~~~~~~~~~~~
 
-It is possible to customize the output format of +rake spec+ by specifying a value for the +output+ environment variable. Possible output formats are: +spec_dox+ (default), +fast+, +test_unit+, +tap+ and +knock+.
++output+ 환경변수를 지정함으로써 +rake spec+의 출력 포멧을 커스터마이징할 수 있습니다. 가능한 출력 포멧은 +spec_dox+ (디폴트), +fast+, +test_unit+, +tap+, +knock+가 있습니다.
 
 ----
 $ rake spec output=test_unit
@@ -67,7 +67,7 @@ $ rake spec output=test_unit
 Basic Testing
 -------------
 
-You can refer to MacBacon's https://github.com/alloy/MacBacon/blob/master/README.md[README] file for a list of assertions and core predicates that the framework supports.
+assertion의 목록이나 프레임워크에서 지원하는 핵심 predicate는 MacBacon의 https://github.com/alloy/MacBacon/blob/master/README.md[README]파일을 참고하십시오.
 
 Views and Controllers Testing
 -----------------------------
