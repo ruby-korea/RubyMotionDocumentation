@@ -1,14 +1,14 @@
 Writing Tests for RubyMotion Apps
 =================================
 
-이 문서는 이미 있는 RubyMotion앱을 어떻게 단위 테스트하는지에 대해 설명합니다. 테스트는 어플리케이션이 지켜야할 사양의 세트를 제공하며, 불행한 변경으로 인한 회귀(regression)를 잡을때도 사용됩니다.
+이 문서는 이미 있는 RubyMotion 앱을 어떻게 단위 테스트하는지에 대해 설명합니다. 테스트는 애플리케이션이 지켜야 할 사양의 세트를 제공하며, 불행한 변경으로 말미암은 회귀(regression)를 잡을 때도 사용됩니다.
 
 Getting Started
 ---------------
 
 RubyMotion에서는 s://github.com/chneukirchen/bacon/[Bacon]을 쓸 수 있습니다. Bacon은 유명한 http://rspec.info/[RSpec] 프레임워크의 축소판 클론으로 https://github.com/chneukirchen[Christian Neukirchen]님이 개발했습니다.
 
-좀더 구체적으로 말하자면, RubyMotion은iOS용으로 확장된 https://github.com/alloy/MacBacon[MacBacon]이라는 버전을 사용하고 있습니다. MacBacon은 https://github.com/alloy[Eloy Duran]님이 관리하고 있습니다.
+좀 더 구체적으로 말하자면, RubyMotion은iOS용으로 확장된 https://github.com/alloy/MacBacon[MacBacon]이라는 버전을 사용하고 있습니다. MacBacon은 https://github.com/alloy[Eloy Duran]님이 관리하고 있습니다.
 
 Spec Files
 ~~~~~~~~~~
@@ -17,37 +17,37 @@ Spec 파일에는 프로젝트의 테스트를 기술해야 합니다.
 
 Spec 파일은 RubyMotion프로젝트의 'spec' 디랙토리의 밑에 작성합니다.
 
-기본설정의 RubyMotion프로젝트는 'spec/main_spec.rb' 파일이 있고, 이 파일에는 어플리케이션이 윈도우를 가지고있는지 확인하는 하나의 테스트가 적혀 있습니다.
+기본설정의 RubyMotion프로젝트는 'spec/main_spec.rb' 파일이 있고, 이 파일에는 애플리케이션이 윈도우를 가졌는지 확인하는 하나의 테스트가 적혀 있습니다.
 
 Spec Helpers
 ~~~~~~~~~~~~
 
-Spec helpers 는 클래스나 메소드를 정의해 테스팅 프레임워크를 확장하는데 사용할 수 있습니다. Spec helpers 는 스팩파일보다 먼저 컴파일되고 실행 됩니다.
+Spec helpers는 클래스나 메소드를 정의해 테스팅 프레임워크를 확장하는 데 사용할 수 있습니다. Spec helpers 는 스팩파일보다 먼저 컴파일되고 실행됩니다.
 
-Spec helpers 는 RubyMotion프로젝트의 'spec/helpers' 디랙토리 밑에 작성합니다. 예를 들면 이런식이죠. 'spec/helpers/extension.rb'
+Spec helpers는 RubyMotion프로젝트의 'spec/helpers' 디랙토리 밑에 작성합니다. 예를 들면 이런 식이죠. 'spec/helpers/extension.rb'
 
 기본설정의 RubyMotion프로젝트는 spec helper를 가지고 있지 않습니다.
 
 Running the Tests
 ~~~~~~~~~~~~~~~~~
 
-RubyMotion 프로젝트의 테스트 스위트를 실행하기 위해 Rake 테스크의 +spec+을 사용합니다.
+RubyMotion 프로젝트의 테스트 스위트를 실행하기 위해 Rake 태스크의 +spec+을 사용합니다.
 
 ----
 $ rake spec
 $ rake spec:device
 ----
 
-이 커맨드는 스팩 프래임워크, 헬퍼, 파일이 포함된 스페셜 버전의 앱을 컴파일하고 백그라운드의 시뮬레이터에서 엡을 실행합니다.
+이 커맨드는 스팩 프래임워크, 헬퍼 파일이 포함된 특별한 앱을 컴파일하고 백그라운드의 시뮬레이터에서 앱을 실행합니다.
 
-일단 spec이 실행 되면, 프로그램은 커맨드라인 프롬프트에 스테이더스 코드(성공일 경우 +0+, 그외에는 +1+)를 돌려줍니다.
+일단 spec이 실행되면, 프로그램은 커맨드라인 프롬프트에 상태 코드(성공일 경우 +0+, 그 외에는 +1+)를 돌려줍니다.
 
 Run Selected Spec Files
 ~~~~~~~~~~~~~~~~~~~~~~~
 
-전체 스팩코드를 실행하는 대신 개별 spec 파일들을 실행하고 싶을때가 있습니다.
+전체 스팩코드를 실행하는 대신 개별 spec 파일들을 실행하고 싶을 때가 있습니다.
 
-실행해야 할 spec 파일을 필터링 하기 위해, 환경변수 +files+에 ","으로 구분된 일련의 패턴을 설정할 수 있습니다. 페턴은 spec 파일의 basename (확장자가 없는 파일명)이거나, 파일경로중 하나여야 합니다.
+실행해야 할 spec 파일을 필터링하기 위해, 환경변수 +files+에 ","으로 구분된 일련의 패턴을 설정할 수 있습니다. 패턴은 spec 파일의 basename (확장자가 없는 파일명)이거나, 파일 경로 중 하나여야 합니다.
 
 예를 들어, 밑의 커맨드는 'spec/foo_spec.rb' 와 'spec/bar_spec.rb' 파일만 실행할 것입니다.
 
@@ -58,7 +58,7 @@ $ rake spec files=foo_spec,spec/bar_spec.rb
 Output Format
 ~~~~~~~~~~~~~
 
-+output+ 환경변수를 지정함으로써 +rake spec+의 출력 포멧을 커스터마이징할 수 있습니다. 가능한 출력 포멧은 +spec_dox+ (디폴트), +fast+, +test_unit+, +tap+, +knock+가 있습니다.
++output+ 환경변수를 지정함으로써 +rake spec+의 출력 포맷을 커스터마이징할 수 있습니다. 가능한 출력 포맷은 +spec_dox+ (디폴트), +fast+, +test_unit+, +tap+, +knock+가 있습니다.
 
 ----
 $ rake spec output=test_unit
@@ -72,13 +72,11 @@ assertion의 목록이나 프레임워크에서 지원하는 핵심 predicate는
 Views and Controllers Testing
 -----------------------------
 
-This layer lets you write functional tests for your controllers and interact with its views through
-a set of high-level event generating APIs, by leveraging the functionality of Apple's http://developer.apple.com/library/ios/#documentation/DeveloperTools/Reference/UIAutomationRef/_index.html[UIAutomation] framework without forcing you to write the tests in Javascript.
+이 레이어는 애플의http://developer.apple.com/library/ios/#documentation/DeveloperTools/Reference/UIAutomationRef/_index.html[UIAutomation]를 활용하여 자바스크립트로 테스트를 적도록 강요하지 않으면서 컨트롤러와 뷰의 상호작용의 단위 테스트를 적을 수 있게 합니다.
 
-This consists of a small API available to your specifications, some runloop helpers, and a couple
-of `UIView` extensions.
+이것은 명세, runloop 핼퍼, `UIView` 확장에 사용할 수 있는 작은 API로 구성되어 있습니다.
 
-IMPORTANT: This is **not** meant for full application acceptance tests. Therefore you should not let the application launch as normal. This can, for instance, be done by using the +RUBYMOTION_ENV+ to return early from +application:didFinishLaunchingWithOptions:+:
+IMPORTANT: 이것은 전체 애플리케이션의 acceptance 테스트가 가능하다는 의미가 **아닙니다**. 따라서 정상 모드로 애플리케이션을 실행하셔서는 안됩니다. 예를 들면, +application:didFinishLaunchingWithOptions:+에서 빠르게 종료시키기 위해 +RUBYMOTION_ENV+를 사용할 수 있습니다.
 
 ----
 class AppDelegate
@@ -90,8 +88,7 @@ class AppDelegate
 Configuring your Context
 ~~~~~~~~~~~~~~~~~~~~~~~~
 
-You need to tell the specification context which controller will be specified and extend it with
-the required API. You do this by specifying your view controller class in the following way:
+명세의 context에 어느 컨트롤러를 테스트할지와 필요한 API를 확장할지를 기술할 필요가 있습니다. 기술 방법은 다음과 같습니다.
 
 ----
 describe "The 'taking over the world' view" do
@@ -101,33 +98,30 @@ describe "The 'taking over the world' view" do
 end
 ----
 
-This will, before each specification, instantiate a new window and a new instance of your view
-controller class. These are available in your specifications as `window` and `controller`.
+이것은 각 명세의 전에 새로운 윈도우, 컨트롤러 클래스의 인스턴스, 뷰 클래스의 인스턴스를 만듭(instantiate)니다.
 
-TIP: If you need to perform custom instantiation of either the window or controller then you can
-     do so from a `before` filter __before__ calling `tests`.  The same applies to `after` filters.
-     If you want those to be able to have a reference to the controller instance used during the
-     test, then you will have to register your `after` filter __before__ the `tests` method’s
-     `after` filter removes the window and controller instances. For example:
+TIP: 만약 윈도우나 컨트롤러에서 독자적인 초기화(custom instantiation)가 필요하다면 `before`필터를
+     `tests`보다 __먼저__ 부름으로써 할 수 있습니다. `after` 필터도 같습니다.
+     테스트 중에 컨트롤러 인스턴스를 참조하길 원한다면, `after` 필터를 윈도우와 컨트롤러의
+     인스턴스를 초기화하는 `tests` 메소드의 `after` 필터보다 __먼저__ 불러야 합니다.
 
 ----
 describe "Before and after filter order illustrated" do
-  # This `before` filter is defined __before__ the one of the `tests` method, so at this point the
-  # window instance is not yet created and you can perform controller initialization.  It is
-  # important to note, though, that once you call `window` it will be created on-demand.
+  # 이 `before` 필터는 `tests` 메소드의 `before` 필터보다 __먼저__ 선언되었으므로, 이 시점에서
+  # 윈도우 인스턴스는 아직 생성되지 않았고 컨트롤러의 초기화가 가능하다. 하지만, `window` 부르면
+  # 그 자리에서 생성된다는 점을 주의해야 한다.
   before do
     controller.dataThatNeedsToBeConfiguredBeforeAssigningToWindow = ['TableView Row 1', 'TableView Row 2']
   end
 
-  # This `after` filter is defined __before__ the one of the `tests` method, so at this point the
-  # window and controller instances are not yet cleaned up and set to `nil`.
-  after do
+  # 이 `after` 필터는 `tests` 메소드의 `after` 필터보다 __먼저__ 선언되었으므로, 이 시점에서
+  # 윈도우와 컨트롤러 인스턴스는 지워져서 nil이 되지 않았다.
     controller.performCustomPostTestWork
     window.performCustomPostTestWork
   end
 
   tests TakingOverTheWorldViewController
-  # Calling `tests` registers a `before` and an `after` filter that do something like the following:
+  # `tests` 호출하면 밑의 내용 비슷한 `before` 와 `after` 필터가 등록 된다.
   #
   #  before do
   #    createWindowAndControllerIfNotCreatedYet
@@ -146,62 +140,56 @@ end
 Storyboards
 ^^^^^^^^^^^
 
-You can test controllers from a http://developer.apple.com/library/ios/#DOCUMENTATION/UIKit/Reference/UIStoryboard_Class/Reference/Reference.html[storyboard]
-by passing the `tests` method the Xcode identifier of the controller in the `:id` option:
+`tests` 메소드의 `:id` 옵션에  Xcode의 컨트롤러 아이디(Identifier)를 넘겨줌으로써,
+http://developer.apple.com/library/ios/#DOCUMENTATION/UIKit/Reference/UIStoryboard_Class/Reference/Reference.html[storyboard]의 컨트롤러를 테스트할 수 있습니다.
 
 ----
 tests StoryboardViewController, :id => 'controller-id'
 ----
 
-By default, controllers will be loaded from the __MainStoryboard.storyboard__ file in the project
-__resources__ directory. You can load a controller from a different file by passing the storyboard
-name in the `:storyboard` option.
+기본 설정으론, 컨트롤러는 프로젝트의 __resources__ 디렉터리의 __MainStoryboard.storyboard__ 파일에서
+로드됩니다. 다른 파일에서 로드하고 싶은 경우, `:storyboard` 옵션에 스토리보드 파일명을 넘겨주시면 됩니다.
 
 ----
 tests StoryboardViewController, :storyboard => 'AlternateStoryboard', :id => 'controller-id'
 ----
 
-TIP: The __Identifier__ field corresponding to the `:id` option is found within the __View Controller__
-     section of the __Attributes Inspector__ in Xcode. The __Attributes Inspector__ can be reached with
-     the __command-option-4__ keyboard shortcut.
+TIP: `:id` 옵션에 넘겨줄 __아이디__ 필드는 Xcode의 __Attributes Inspector__ 의 __View Controller__ 섹션
+     에서 찾을 수 있습니다. __Attributes Inspector__ 는 단축키 __command-option-4__로 열 수 있습니다.
 
 Durations
 ~~~~~~~~~
 
-Some methods take a `:duration` option which specifies the period of time, in seconds, during which
-events will be generated. This is **always** optional.
+어떤 메소드는 `:duration` 옵션으로 초 단위로 이벤트의 생성 이후의 대기 시간을 지정할 수 있습니다. 이것은 **언제나** 옵션입니다.
 
-TIP: The default duration value can be changed through `Bacon::Functional.default_duration=`.
+TIP: duration의 기본값은 `Bacon::Functional.default_duration=`으로 변경 가능합니다.
 
 Device Events
 ~~~~~~~~~~~~~
 
-These methods generate events that operate on the device level. As such, they don’t take an
-accessibility label or specific view.
+이 메소드들은 디바이스 레벨의 이벤트를 만듭니다. accessibility레벨의 특정 뷰는 받을 수 없습니다.
 
 rotate_device
 ^^^^^^^^^^^^^
 
-Rotates the device to the specified orientation.
+디바이스를 지정한 방향으로 회전시킵니다.
 
 ----
 rotate_device(:to => orientation, :button => location)
 ----
 
-*     **to**: The orientation to rotate the device to, which can be either `:portrait` or `:landscape`.
-* **button**: Used to indicate a specific portrait/landscape orientation which can be either
-              `:bottom` or `:top` in portrait mode, or either `:left` or `:right` in landscape
-              mode. If omitted, it will default to `:bottom` in portrait mode and `:left` in
-              landscape mode.
+*     **to**: 회전시킬 방향 `:portrait` 이나 `:landscape`를 넣을 수 있습니다.
+* **button**: portrait/landscape 의 방향을 설정할 때 사용합니다.
+              portrait에서는 `:bottom` 이나 `:top`을 landscape에서는 `:left` 나 `:right`를 넣을 수 있습니다.
+              생략했을 경우의 기본 치는 portrait에서는 `:bottom`, landscape에서는 `:left` 입니다.
 
-The following example rotates the device to the landscape orientation with the home button on the
-left-hand side of the device:
+밑의 구문은 홈 버튼이 왼손 쪽으로 오도록 디바이스를 회전시킵니다.
 
 ----
 rotate_device :to => :landscape
 ----
 
-Or to have the button on the right-hand side of the device:
+오른손 쪽으로 회전시킬 수도 있습니다.
 
 ----
 rotate_device :to => :landscape, :button => :right
@@ -210,23 +198,20 @@ rotate_device :to => :landscape, :button => :right
 accelerate
 ^^^^^^^^^^
 
-Generates accelerometer events.
+accelerometer 이벤트를 생성합니다.
 
 ----
 accelerate(:x => x_axis_acceleration, :y => y_axis_acceleration,
            :z => z_axis_acceleration, :duration => duration)
 ----
 
-From the http://bit.ly/nWAu5X[UIAcceleration class reference]:
+http://bit.ly/nWAu5X[UIAcceleration class reference]에 의하면
 
-* **x**: With the device held in portrait orientation and the screen facing you, the x axis runs
-         from left (negative values) to right (positive values) across the face of the device.
-* **y**: With the device held in portrait orientation and the screen facing you, the y axis runs
-         from bottom (negative values) to top (positive values) across the face of the device.
-* **z**: With the device held in portrait orientation and the screen facing you, the z axis runs
-         from back (negative values) to front (positive values) through the device.
+* **x**: portrait의 정면을 보고 있는 상태에서, x축은 디바이스의 왼쪽(마이너스)에서 오른쪽(플러스) 방향입니다.
+* **y**: portrait의 정면을 보고 있는 상태에서, y축은 디바이스의 밑쪽(마이너스)에서 위쪽(플러스) 방향입니다.
+* **z**: portrait의 정면을 보고 있는 상태에서, z축은 디바이스의 뒤쪽(마이너스)에서 정면 쪽(플러스) 방향입니다.
 
-This will simulate a device laying still on its back:
+뒤쪽으로 디바이스를 휘두르는 시뮬레이션은 이렇게 합니다.
 
 ----
 accelerate :x => 0, :y => 0, :z => -1
@@ -235,15 +220,15 @@ accelerate :x => 0, :y => 0, :z => -1
 shake
 ^^^^^
 
-Essentially generates accelerometer events.
+기본적으로 accelerometer 이벤트를 생성합니다.
 
 ----
 shake()
 ----
 
-Use this when you want to specifically trigger a shake motion event.
+흔드는 이벤트를 발생시키고 싶으면 이 메소드를 사용하세요.
 
-For more information see the http://bit.ly/MV57Y9[event handling guide].
+더 자세한 정보는 http://bit.ly/MV57Y9[event handling guide]를 참조해 주십시오.
 
 Finding Views
 ~~~~~~~~~~~~~
