@@ -2,27 +2,25 @@ Use CocoaPods Dependencies in RubyMotion Apps
 =============================================
 Laurent Sansonetti <lrz@hipbyte.com>
 
-In this article we will cover how you can integrate the http://cocoapods.org[CocoaPods] dependency manager inside your RubyMotion project.
+이 글은 RubyMotion프로젝트에서 의존성 관리 도구인 http://cocoapods.org[CocoaPods] 를 어떻게 사용할지를 다룹니다.
 
 Synopsis
 --------
 
-CocoaPods is the dependency manager for Objective-C projects. It is similar to RubyGems and Bundler, but for Objective-C dependencies.
+CocoaPods 는 공식지원판이 아닌 Objective-C의 의존성 관리 도구입니다. Objective-C 의존성을 위한 RubyGems라고 보셔도 무방합니다.
 
-Dependencies in CocoaPods are called Pods. You can get the list of available Pods available and more information from http://cocoapods.org.
-
-CocoaPods was originally designed to be integrated in Objective-C Xcode projects, but we worked with the awesome CocoaPods author to make it possible to be used in RubyMotion projects.
+CocoaPods안에서 의존성은 Pods라고 불립니다. http://cocoapods.org 에서 사용가능한 Pods의 목록과 더 자세한 정보를 보실 수 있습니다.
 
 Installation
 ------------
 
-First, you will need to install and setup CocoaPods. Please refer to the http://guides.cocoapods.org/using/getting-started.html#installation[installation guide] on how to install CocoaPods, then run:
+먼저 CocoaPods를 설치하고 설정해야 합니다. CocoaPods를 설치하는 방법은 http://guides.cocoapods.org/using/getting-started.html#installation[installation guide] 를 참조 하세요. 설치하셨으면 다음을 실행 합니다.
 
 ----
 $ pod setup
 ----
 
-The http://github.com/HipByte/motion-cocoapods[RubyMotion CocoaPods integration] also comes as a gem and can be installed as follows:
+The http://github.com/HipByte/motion-cocoapods[RubyMotion의 CocoaPods] 도 gem으로 설치 가능합니다.
 
 ----
 $ sudo gem install motion-cocoapods
@@ -31,16 +29,16 @@ $ sudo gem install motion-cocoapods
 Usage
 -----
 
-You will need to require the gem inside the 'Rakefile' of your project.
+프로젝트의 'Rakefile' 안에 gem을 require해야 합니다.
 
 ----
 require 'rubygems'
 require 'motion-cocoapods'
 ----
 
-Once you do that, you can simply use the +pods+ method of the application configuration object to describe the Pods you want to require, by using the same expressions as you would do in a regular Podfile.
+이제 애플리케이션 설정에서 Podfile을 사용 하던 것 처럼 간단히 +pods+ 메소드를 사용해 require할 Pods를 적을 수 있습니다.
 
-For instance, if you want to make use of the +AFNetworking+ Pod:
+예를들어 +AFNetworking+ Pod를 사용하고 싶으시다면,
 
 ----
 Motion::Project::App.setup do |app|
@@ -51,13 +49,13 @@ Motion::Project::App.setup do |app|
 end
 ----
 
-Then you only need to tell your project to run the CocoaPods integration which will download the sources and configure your project to include +AFNetworking+ on the next build:
+그런 다음 프로젝트에 CocoaPods 통합을 실행해 소스를 다운로드 받고 다음에 프로젝트를 빌드할 때 +AFNetworking+ 을 포함하도록 설정하게 합니다.
 
 ----
 $ rake pod:install
 ----
 
-Now when you build your project, the +AFNetworking+ sources will be built and linked against your application executable:
+이제 프로젝트의 애플리케이션 빌드할때 +AFNetworking+ 의 소스를 빌드, 실행파일에 링크합니다.
 
 ----
 $ rake
