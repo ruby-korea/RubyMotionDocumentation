@@ -2,44 +2,43 @@ Setting up your editor to work with RubyMotion
 ==============================================
 Laurent Sansonetti <lrz@hipbyte.com>
 
-RubyMotion was designed so that developers do not need to switch to a particular editor or IDE in order to use it and can simply keep using the text editor they already know and love.
+RubyMotion은 이미 쓰고 있는 좋아하는 텍스트 편집기를 계속 사용할 수 있도록 개발자가 RubyMotion을 사용하기 위해 특정 편집기나 IDE로 갈아탈 필요가 없도록 설계되었습니다.
 
-This article covers the text editors that provide support for RubyMotion. We try to keep this article up-to-date following the contributions from the community.
-
+이 문서는 RubyMotion을 지원하는 텍스트 편집기에 대해 다룹니다. 이 문서는 커뮤니티의 기여들을 계속 반영하여 최신상태로 유지하려고 노력하고 있습니다.
 TextMate
 --------
 
-http://macromates.com/[TextMate] is a popular editor on OS X.
+http://macromates.com/[TextMate] 는 유명한 OS X용 편집기입니다.
 
-A https://github.com/libin/RubyMotion.tmbundle[RubyMotion.tmbundle] plugin is available. It provides code completion and an integration with the build system. It is developed by https://github.com/libin[Libin Pan] and https://github.com/berklee[Berklee].
+A https://github.com/libin/RubyMotion.tmbundle[RubyMotion.tmbundle] 은 https://github.com/libin[Libin Pan] 님과 https://github.com/berklee[Berklee] 님이 개발한 코드 자동완성과 빌드 시스템과의 연동이 가능한 플러그인 입니다.
 
 Sublime Text
 ------------
 
-http://www.sublimetext.com/[Sublime Text] is a relatively new editor for OS X, Windows and Linux that is gaining a lot of interest.
+http://www.sublimetext.com/[Sublime Text] 은 비교적 새로운 편에 속하면서 관심을 모으고있는 OS X, Windows, Linux용 편집기 입니다.
 
-https://github.com/haraken3/SublimeRubyMotionBuilder[SublimeRubyMotionBuilder] is a plugin that provides code completion and an integration with the build system. It is developed by https://github.com/haraken3[Kentaro Hara].
+https://github.com/haraken3/SublimeRubyMotionBuilder[SublimeRubyMotionBuilder] 는 https://github.com/haraken3[Kentaro Hara] 님이 개발한 코드 자동완성과 빌드 시스템과의 연동이 가능한 플러그인 입니다.
 
 Redcar
 ------
 
-http://redcareditor.com/[Redcar] is an Open Source editor written in Ruby.
+http://redcareditor.com/[Redcar] 는 루비로 짜여진 오픈소스 편집기 입니다.
 
-https://github.com/kattrali/redcar-rubymotion[redcar-rubymotion] is a plugin that integrates the RubyMotion workflow in Redcar. All features of RubyMotion are integrated. It is developed by https://github.com/kattrali[Delisa Mason].
+https://github.com/kattrali/redcar-rubymotion[redcar-rubymotion] 은 https://github.com/kattrali[Delisa Mason]가 개발한 Redcar에서 RubyMotion 작업흐름과 통합하게 해주는 플러그인입니다. RubyMotion의 모든 기능을 사용할 수 있습니다.
 
 Vim
 ---
 
-http://www.vim.org/[Vim] is the most popular clone of http://en.wikipedia.org/wiki/Vi[vi]. Vim ships in OS X. http://code.google.com/p/macvim/[MacVim] is a flavor of Vim for OS X that runs outside the terminal.
+http://www.vim.org/[Vim] 은 http://en.wikipedia.org/wiki/Vi[vi] 의 가장 유명한 클론으로 OS X에 기본으로 설치 되어있습니다. http://code.google.com/p/macvim/[MacVim] 은 터미널 밖에서 동작하는 OS X용 Vim의 한 종류입니다.
 
-The builtin +rake ctags+ task can be used to generate a +tags+ file containing all the APIs the project can call into. This file can then be used to automatically complete API calls in the editor. RubyMotion uses http://ctags.sourceforge.net/[Exuberant Ctags]. Ctags is a format understood by a variety of text editors, Vim included.
+프로젝트에 포함된 +rake ctags+ 테스크는 프로젝트에서 호출 가능한 모든 API에 대한 +tags+ 파일을 생성해줍니다. 이 파일은 편집기에서 자동완성이 가능하게 해줍니다. RubyMotion은 http://ctags.sourceforge.net/[Exuberant Ctags] 를 사용합니다. Ctags포멧은 Vim을 포함한 다양한 텍스트 편집기에서 사용하실 수 있습니다.
 
-Better auto-completion can be provided by using the https://github.com/rcyrus/snipmate-snippets-rubymotion[snipmate-snippets-rubymotion] plugin, courtesy of https://github.com/rcyrus[Rajeev Cyrus].
+좀더 나은 자동완성을 원하시면 https://github.com/rcyrus[Rajeev Cyrus] 님이 개발하신 https://github.com/rcyrus/snipmate-snippets-rubymotion[snipmate-snippets-rubymotion] 플러그인을 사용하세요.
 
 Emacs
 -----
 
-http://www.gnu.org/software/emacs/[Emacs] is a popular text editor. Emacs ships in OS X.
+http://www.gnu.org/software/emacs/[Emacs] 은 유명한 텍스트 편집기로 OS X에 기본으로 설치되어 있습니다.
 
-https://github.com/ainame/motion-mode[motion-mode] is a plugin that provides code completion and an integration with the build system. It is developed by https://github.com/ainame[Satoshi Namai].
+https://github.com/ainame/motion-mode[motion-mode] 은 https://github.com/ainame[Satoshi Namai] 님이 개발한 코드 자동완성과 빌드 시스템과의 연동이 가능한 플러그인입니다.
 
