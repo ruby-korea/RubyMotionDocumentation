@@ -2,50 +2,50 @@ Use CocoaPods Dependencies in RubyMotion Apps
 =============================================
 Laurent Sansonetti <lrz@hipbyte.com>
 
-In this article we will cover how you can integrate the http://cocoapods.org[CocoaPods] dependency manager inside your RubyMotion project.
+이 글은 RubyMotion프로젝트에서 의존성 관리 도구인 http://cocoapods.org[CocoaPods] 를 어떻게 사용할지를 다룹니다.
 
 Synopsis
 --------
 
-CocoaPods is the missing dependency manager for Objective-C projects. It is similar to RubyGems but for Objective-C dependencies.
+CocoaPods 는 공식지원판이 아닌 Objective-C의 의존성 관리 도구입니다. Objective-C 의존성을 위한 RubyGems라고 보셔도 무방합니다.
 
-Dependencies in CocoaPods are called Pods. You can get the list of Pods available from the http://github.com/CocoaPods/Specs[CocoaPods/Specs] GitHub repository.
+CocoaPods안에서 의존성은 Pods라고 불립니다. GitHub 저장소 http://github.com/CocoaPods/Specs[CocoaPods/Specs] 에서 사용가능한 Pods의 목록을 보실 수 있습니다.
 
-CocoaPods was originally designed to be integrated in Objective-C Xcode projects, but we worked with the awesome CocoaPods author to make it possible to be used in RubyMotion projects.
+CocoaPods는 원래 Objective-C Xcode를 위해 설계되었습니다만, 멋진 CocoaPods 개발자와 함께 CocoaPods를 RubyMotion프로젝트에서 사용할 수 있게 만들었습니다.
 
-You can check the http://cocoapods.org website to get more information about CocoaPods.
+CocoaPods에 관한 더 자세한 정보는 http://cocoapods.org 웹사이트에서 확인하실 수 있습니다.
 
 Installation
 ------------
 
-First, you will need to install and setup CocoaPods, unless you already have.
+이미 설치되어있지 않으시다면 먼저 CocoaPods를 설치하고 설정해야 합니다.
 
 ----
 $ sudo gem install cocoapods
 $ pod setup
 ----
 
-The RubyMotion CocoaPods integration also comes as a gem. 
+RubyMotion의 CocoaPods도 gem으로 설치 가능합니다.
 
 ----
 $ sudo gem install motion-cocoapods
 ----
 
-The code lives in the http://github.com/HipByte/motion-cocoapods[HipByte/motion-cocoapods] GitHub repository.
+코드는 GitHub 저장소 The code lives in the http://github.com/HipByte/motion-cocoapods[HipByte/motion-cocoapods] 에서 공개 중 입니다.
 
 Usage
 -----
 
-You will need to require the gem inside the 'Rakefile' of your project.
+프로젝트의 'Rakefile' 안에 gem을 require해야 합니다.
 
 ----
 require 'rubygems'
 require 'motion-cocoapods'
 ----
 
-Once you do that, you can simply use the +pods+ method of the application configuration object to describe the Pods you want to require, by using the same expressions as you would do in a regular Podfile.
+이제 애플리케이션 설정에서 Podfile을 사용 하던 것 처럼 간단히 +pods+ 메소드를 사용해 require할 Pods를 적을 수 있습니다.
 
-For instance, if you want to require the +JSONKit+ Pod.
+예를들어 +JSONKit+ Pod를 require하고 싶으시다면,
 
 ----
 Motion::Project::App.setup do |app|
@@ -56,7 +56,7 @@ Motion::Project::App.setup do |app|
 end
 ----
 
-That's all you have to do.
+이 것이 전부 입니다.
 
-The next time you build your project, the +JSONKit+ sources will be downloaded then built and linked against your application executable. If you require a Pod that has dependencies, they will also be properly honored.
+다음에 프로젝트의 애플리케이션 실행파일을 빌드할때 +JSONKit+ 를 다운로드해 빌드, 링크됩니다. Pod안에 다른 Pod의 의존성이 필요한 경우에도 재대로 동작합니다.
 
