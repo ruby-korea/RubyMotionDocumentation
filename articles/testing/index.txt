@@ -6,7 +6,7 @@ Writing Tests for RubyMotion Apps
 Getting Started
 ---------------
 
-RubyMotion에서는 s://github.com/chneukirchen/bacon/[Bacon]을 쓸 수 있습니다. Bacon은 유명한 http://rspec.info/[RSpec] 프레임워크의 축소판 클론으로 https://github.com/chneukirchen[Christian Neukirchen]님이 개발했습니다.
+RubyMotion에서는 https://github.com/chneukirchen/bacon/[Bacon]을 쓸 수 있습니다. Bacon은 유명한 http://rspec.info/[RSpec] 프레임워크의 축소판 클론으로 https://github.com/chneukirchen[Christian Neukirchen]님이 개발했습니다.
 
 좀 더 구체적으로 말하자면, RubyMotion은iOS용으로 확장된 https://github.com/alloy/MacBacon[MacBacon]이라는 버전을 사용하고 있습니다. MacBacon은 https://github.com/alloy[Eloy Duran]님이 관리하고 있습니다.
 
@@ -31,7 +31,7 @@ Spec helpers는 RubyMotion프로젝트의 'spec/helpers' 디렉터리 밑에 작
 Running the Tests
 ~~~~~~~~~~~~~~~~~
 
-RubyMotion 프로젝트의 테스트 스위트를 실행하기 위해 Rake 태스크의 +spec+을 사용합니다.
+RubyMotion 프로젝트의 테스트 스위트를 실행하기 위해 Rake 태스크의 +spec+ 을 사용합니다.
 
 ----
 $ rake spec
@@ -47,7 +47,7 @@ Run Selected Spec Files
 
 전체 스팩코드를 실행하는 대신 개별 spec 파일들을 실행하고 싶을 때가 있습니다.
 
-실행해야 할 spec 파일을 필터링하기 위해, 환경변수 +files+에 ","으로 구분된 일련의 패턴을 설정할 수 있습니다. 패턴은 spec 파일의 basename (확장자가 없는 파일명)이거나, 파일 경로 중 하나여야 합니다.
+실행해야 할 spec 파일을 필터링하기 위해, 환경변수 +files+ 에 "," 으로 구분된 일련의 패턴을 설정할 수 있습니다. 패턴은 spec 파일의 basename (확장자가 없는 파일명)이거나, 파일 경로 중 하나여야 합니다.
 
 예를 들어, 밑의 커맨드는 'spec/foo_spec.rb' 와 'spec/bar_spec.rb' 파일만 실행할 것입니다.
 
@@ -58,7 +58,7 @@ $ rake spec files=foo_spec,spec/bar_spec.rb
 Output Format
 ~~~~~~~~~~~~~
 
-+output+ 환경변수를 지정함으로써 +rake spec+의 출력 포맷을 커스터마이징할 수 있습니다. 가능한 출력 포맷은 +spec_dox+ (디폴트), +fast+, +test_unit+, +tap+, +knock+가 있습니다.
++output+ 환경변수를 지정함으로써 +rake spec+ 의 출력 포맷을 커스터마이징할 수 있습니다. 가능한 출력 포맷은 +spec_dox+ (기본 치), +fast+, +test_unit+, +tap+, +knock+ 가 있습니다.
 
 ----
 $ rake spec output=test_unit
@@ -76,7 +76,7 @@ Views and Controllers Testing
 
 이것은 명세, runloop 핼퍼, `UIView` 확장에 사용할 수 있는 작은 API로 구성되어 있습니다.
 
-IMPORTANT: 이것은 전체 애플리케이션의 acceptance 테스트가 가능하다는 의미가 **아닙니다**. 따라서 정상 모드로 애플리케이션을 실행하셔서는 안 됩니다. 예를 들면, +application:didFinishLaunchingWithOptions:+에서 빠르게 종료시키기 위해 +RUBYMOTION_ENV+를 사용할 수 있습니다.
+IMPORTANT: 이것은 전체 애플리케이션의 acceptance 테스트가 가능하다는 의미가 **아닙니다**. 따라서 정상 모드로 애플리케이션을 실행하셔서는 안 됩니다. 예를 들면, +application:didFinishLaunchingWithOptions:+ 에서 빠르게 종료시키기 위해 +RUBYMOTION_ENV+ 를 사용할 수 있습니다.
 ----
 class AppDelegate
   def application(application, didFinishLaunchingWithOptions:launchOptions)
@@ -99,8 +99,8 @@ end
 
 이것은 각 명세의 전에 새로운 윈도우, 컨트롤러 클래스의 인스턴스, 뷰 클래스의 인스턴스를 만듭(instantiate)니다.
 
-TIP: 만약 윈도우나 컨트롤러에서 독자적인 초기화(custom instantiation)가 필요하다면 `before`필터를
-     `tests`보다 __먼저__ 부름으로써 할 수 있습니다. `after` 필터도 같습니다.
+TIP: 만약 윈도우나 컨트롤러에서 독자적인 초기화(custom instantiation)가 필요하다면 `before` 필터를
+     `tests` 보다 __먼저__ 부름으로써 할 수 있습니다. `after` 필터도 같습니다.
      테스트 중에 컨트롤러 인스턴스를 참조하길 원한다면, `after` 필터를 윈도우와 컨트롤러의
      인스턴스를 초기화하는 `tests` 메소드의 `after` 필터보다 __먼저__ 불러야 합니다.
 
@@ -161,7 +161,7 @@ Durations
 
 어떤 메소드는 `:duration` 옵션으로 초 단위로 이벤트의 생성 이후의 대기 시간을 지정할 수 있습니다. 이것은 **언제나** 옵션입니다.
 
-TIP: duration의 기본값은 `Bacon::Functional.default_duration=`으로 변경 가능합니다.
+TIP: duration의 기본값은 `Bacon::Functional.default_duration=` 으로 변경 가능합니다.
 
 Device Events
 ~~~~~~~~~~~~~
@@ -177,9 +177,9 @@ rotate_device
 rotate_device(:to => orientation, :button => location)
 ----
 
-*     **to**: 회전시킬 방향 `:portrait` 이나 `:landscape`를 넣을 수 있습니다.
+*     **to**: 회전시킬 방향 `:portrait` 이나 `:landscape` 를 넣을 수 있습니다.
 * **button**: portrait/landscape 의 방향을 설정할 때 사용합니다.
-              portrait에서는 `:bottom` 이나 `:top`을 landscape에서는 `:left` 나 `:right`를 넣을 수 있습니다.
+              portrait에서는 `:bottom` 이나 `:top` 을 landscape에서는 `:left` 나 `:right` 를 넣을 수 있습니다.
               생략했을 경우의 기본 치는 portrait에서는 `:bottom`, landscape에서는 `:left` 입니다.
 
 밑의 구문은 홈 버튼이 왼손 쪽으로 오도록 디바이스를 회전시킵니다.
@@ -232,14 +232,14 @@ shake()
 Finding Views
 ~~~~~~~~~~~~~
 
-이 메소드들은 뷰를 검색할 때 사용합니다. 이 메소드는 현재 `window`에서 뷰 계층 아래쪽으로 내려가며 탐색합니다.
+이 메소드들은 뷰를 검색할 때 사용합니다. 이 메소드는 현재 `window` 에서 뷰 계층 아래쪽으로 내려가며 탐색합니다.
 
 만약 뷰가 검색되지 않으면, `time out`(기본 치는 3초)될 때까지 재시도 합니다.
 이 말은 뷰를 찾을 때 로딩 중이나 애니메이션 중인지 걱정할 필요가 없다는 뜻입니다.
 
 타임아웃 시간이 지나고 뷰를 발견하지 **못하면** 예외가 발생합니다.
 
-TIP: 타임아웃의 기본 치는 `Bacon::Functional·default_time out=`로 변경할 수 있습니다.
+TIP: 타임아웃의 기본 치는 `Bacon::Functional·default_time out=` 으로 변경할 수 있습니다.
 
 view
 ^^^^
@@ -291,12 +291,12 @@ View Events
 ~~~~~~~~~~~
 
 이 메소드들은 뷰에서 할 수 있는 모든 오퍼레이션입니다. 오퍼레이션 할 뷰를 지정할 때는 뷰의
-‘accessibility label’이나 뷰의 인스턴스에 직접 넘겨서 할 수 있습니다.
+‘accessibility label’ 이나 뷰의 인스턴스에 직접 넘겨서 할 수 있습니다.
 
 NOTE: 일반적으로 모든 UIKit 컨트롤들은 accessibility 라벨의 기본 치를 가지고 있습니다.
       예를 들어, “Take over the world”라는 타이틀의 UIButton이 있다면 그 UIButton의
       accessibility 라벨은 타이틀과 같은 값이 됩니다. 커스텀 뷰의 경우나 어떤 이유로든
-      기본 치를 다시 정의해야 할 일이 있다면, `accessibilityLabel`속성을 설정해서 할 수 있습니다.
+      기본 치를 다시 정의해야 할 일이 있다면, `accessibilityLabel` 속성을 설정해서 할 수 있습니다.
 
 ‘location’이 필요할 때는, `CGPoint` 인스턴스나 밑의 상수(constants) 중 하나를 사용할 수 있습니다.
 
@@ -311,9 +311,9 @@ NOTE: 일반적으로 모든 UIKit 컨트롤들은 accessibility 라벨의 기�
 
 NOTE: `CGPoint` 인스턴스는 윈도우 좌표계 안에서만 정의해야 합니다.
 
-TIP: 일부 메소드는 옵션으로 `:from`과 `:to` 위치를 받을 수 있습니다. 위의 __상수로__ `:from`
-     이나 `:to`중 __한쪽만__ 지정한 경우엔 다른 옵션은 생략할 수 있고 생략된 옵션에는 기본
-     치가 설정됩니다. 하지만 `CG Point`인스턴스를 사용한 경우엔 양쪽 다 설정 __해야만__ 합니다.
+TIP: 일부 메소드는 옵션으로 `:from` 과 `:to` 위치를 받을 수 있습니다. 위의 __상수로__ `:from`
+     이나 `:to` 중 __한쪽만__ 지정한 경우엔 다른 옵션은 생략할 수 있고 생략된 옵션에는 기본
+     치가 설정됩니다. 하지만 `CG Point` 인스턴스를 사용한 경우엔 양쪽 다 설정 __해야만__ 합니다.
 
 tap
 ^^^
@@ -384,10 +384,10 @@ pinch_open
 pinch_open(label_or_view, :from => location, :to => location, :duration => duration)
 ----
 
-* **from**: __양__ 손가락의 시작 위치를 지정합니다. 기본 치는 `:left`입니다.
-*   **to**: 손가락의 __이동이__ 끝날 위치를 지정합니다. 기본 치는 `:right`입니다.
+* **from**: __양__ 손가락의 시작 위치를 지정합니다. 기본 치는 `:left` 입니다.
+*   **to**: 손가락의 __이동이__ 끝날 위치를 지정합니다. 기본 치는 `:right` 입니다.
 
-`UIScrollView`를 줌인하는 예제입니다.
+`UIScrollView` 를 줌인하는 예제입니다.
 
 ----
 view('Zooming scrollview').zoomScale # => 1.0
@@ -404,10 +404,10 @@ pinch_close
 pinch_close(label_or_view, :from => location, :to => location, :duration => duration)
 ----
 
-* **from**: 손가락의 __이동이__ 시작될 위치를 지정합니다. 기본 치는 `:right`입니다.
-*   **to**: __양__ 손가락의 끝 위치를 지정합니다. 기본 치는 `:left`입니다.
+* **from**: 손가락의 __이동이__ 시작될 위치를 지정합니다. 기본 치는 `:right` 입니다.
+*   **to**: __양__ 손가락의 끝 위치를 지정합니다. 기본 치는 `:left` 입니다.
 
-`UIScrollView`를 줌아웃하는 예제입니다.
+`UIScrollView` 를 줌아웃하는 예제입니다.
 
 ----
 view('Zooming scrollview').zoomScale # => 1.0
@@ -425,9 +425,9 @@ drag(label_or_view, :from => location, :to => location, :number_of_points => ste
      :points => path, :touches => number_of_fingers, :duration => duration)
 ----
 
-*             **from**: 드래그를 시작할 위치를 지정합니다. `:points`옵션이 있는 경우 사용할 수 없습니다.
-*               **to**: 드래그를 끝날 위치를 지정합니다. `:points`옵션이 있는 경우 사용할 수 없습니다.
-* **number_of_points**: `:from`에서 `:to`까지 드래그 할 때의 지나칠 경로의 수를 지정합니다. 기본 치는 20입니다. `:points`옵션이 있는 경우 사용할 수 없습니다.
+*             **from**: 드래그를 시작할 위치를 지정합니다. `:points` 옵션이 있는 경우 사용할 수 없습니다.
+*               **to**: 드래그를 끝날 위치를 지정합니다. `:points` 옵션이 있는 경우 사용할 수 없습니다.
+* **number_of_points**: `:from` 에서 `:to` 까지 드래그 할 때의 지나칠 경로의 수를 지정합니다. 기본 치는 20입니다. `:points` 옵션이 있는 경우 사용할 수 없습니다.
 *           **points**: 드래그할 패스를 지정합니다. `CG Point` 인스턴스의 배열을 지정합니다.
 *          **touches**: 드래그에 사용할 손가락 수를 지정합니다. 기본 치는 싱글 터치입니다.
 
