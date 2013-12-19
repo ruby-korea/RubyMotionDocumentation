@@ -2,9 +2,9 @@ Writing Ruby gems for RubyMotion
 ================================
 Laurent Sansonetti <lrz@hipbyte.com>
 
-RubyMotion projects can be extended through the use of RubyGems, the Ruby de-facto packaging system. This article will cover how to write RubyMotion-specific gems.
+사실상 Ruby의 패키지 시스템인 RubyGems를 사용함으로써 RubyMotion프로젝트를 확장 시킬 수 있습니다. 이 문서는 RubyMotion에 특화된 gem을 만드는 법에 대해 설명합니다.
 
-This article was inspired by http://reality.hk/posts/2012/05/22/create-gems-for-rubymotion[Create gems for RubyMotion], by Francis Chong.
+이 문서는 Francis Chong님의 글 http://reality.hk/posts/2012/05/22/create-gems-for-rubymotion[Create gems for RubyMotion]에 영감을 받았습니다.
 
 Getting started
 ---------------
@@ -13,7 +13,7 @@ RubyMotion being a statically-built flavor of the Ruby language, existing Ruby g
 
 In RubyMotion, gems are required in a project's 'Rakefile' and are responsible to extend the project's configuration, for instance by adding files to the project or introducing new settings or +rake+ tasks.
 
-In this article we will work with the fictional +foo+ gem, which has the following file tree.
+이 문서에서는 가상의 +foo+ gem을 기준으로 설명하겠습니다. +foo+ gem의 파일 트리는 다음과 같습니다.
 
 ----
 foo.gemspec
@@ -21,7 +21,7 @@ lib
   foo.rb
 ----
 
-The +foo+ gem can be used in a RubyMotion project simply by requiring it in its 'Rakefile'.
+RubyMotion 프로젝트에서 +foo+ gem을 사용하려면 'Rakefile'에서 require하기만 하면 됩니다.
 
 ----
 $:.unshift("/Library/RubyMotion/lib")
@@ -33,9 +33,9 @@ require 'foo'
 # ...
 ----
 
-NOTE: the +require "rubygems"+ line is not necessary if you use Ruby 1.9.
+NOTE: +require "rubygems"+ 은 Ruby 1.9를 사용하신다면 필요 없습니다.
 
-The +foo.rb+ file is the entry point of the gem.  It is a good idea to protect this file from being required outside RubyMotion, by adding the following code.
++foo.rb+ 파일은 gem의 진입지점 입니다. 밑의 코드로 RubyMotion밖에서 이 파일이 로드되지 않도록 보호해두는 것도 좋습니다.
 
 ----
 unless defined?(Motion::Project::Config)
@@ -116,7 +116,7 @@ end
 Adding +rake+ tasks
 -------------------
 
-A RubyMotion gem can also very easily extend the build system to introduce new +rake+ tasks. 
+A RubyMotion gem can also very easily extend the build system to introduce new +rake+ tasks.
 
 Since the 'foo.rb' file is required within the RubyMotion project 'Rakefile', it's just a matter of defining the tasks there.
 
