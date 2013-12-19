@@ -1066,7 +1066,7 @@ pre {
 <h1>Use CocoaPods Dependencies in RubyMotion Apps</h1>
 <span id="author">Laurent Sansonetti</span><br><span id="email" class="monospaced">&lt;<a href="mailto:lrz@hipbyte.com">lrz@hipbyte.com</a>&gt;</span><br><div id="preamble">
 <div class="sectionbody">
-<div class="paragraph"><p>In this article we will cover how you can integrate the <a href="http://cocoapods.org">CocoaPods</a> dependency manager inside your RubyMotion project.</p></div>
+<div class="paragraph"><p>이 글은 RubyMotion프로젝트에서 의존성 관리 도구인 <a href="http://cocoapods.org">CocoaPods</a> 를 어떻게 사용할지를 다룹니다.</p></div>
 </div>
 </div>
 <div id="toc">
@@ -1081,43 +1081,43 @@ pre {
 <div class="sect1">
 <span class="anchor_helper" id="_synopsis"></span><h2 data-anchor="_synopsis">1. Synopsis</h2>
 <div class="sectionbody">
-<div class="paragraph"><p>CocoaPods is the missing dependency manager for Objective-C projects. It is similar to RubyGems but for Objective-C dependencies.</p></div>
-<div class="paragraph"><p>Dependencies in CocoaPods are called Pods. You can get the list of Pods available from the <a href="http://github.com/CocoaPods/Specs">CocoaPods/Specs</a> GitHub repository.</p></div>
-<div class="paragraph"><p>CocoaPods was originally designed to be integrated in Objective-C Xcode projects, but we worked with the awesome CocoaPods author to make it possible to be used in RubyMotion projects.</p></div>
-<div class="paragraph"><p>You can check the <a href="http://cocoapods.org">http://cocoapods.org</a> website to get more information about CocoaPods.</p></div>
+<div class="paragraph"><p>CocoaPods 는 공식지원판이 아닌 Objective-C의 의존성 관리 도구입니다. Objective-C 의존성을 위한 RubyGems라고 보셔도 무방합니다.</p></div>
+<div class="paragraph"><p>CocoaPods안에서 의존성은 Pods라고 불립니다. GitHub 저장소 <a href="http://github.com/CocoaPods/Specs">CocoaPods/Specs</a> 에서 사용가능한 Pods의 목록을 보실 수 있습니다.</p></div>
+<div class="paragraph"><p>CocoaPods는 원래 Objective-C Xcode를 위해 설계되었습니다만, 멋진 CocoaPods 개발자와 함께 CocoaPods를 RubyMotion프로젝트에서 사용할 수 있게 만들었습니다.</p></div>
+<div class="paragraph"><p>CocoaPods에 관한 더 자세한 정보는 <a href="http://cocoapods.org">http://cocoapods.org</a> 웹사이트에서 확인하실 수 있습니다.</p></div>
 </div>
 </div>
 <div class="sect1">
 <span class="anchor_helper" id="_installation"></span><h2 data-anchor="_installation">2. Installation</h2>
 <div class="sectionbody">
-<div class="paragraph"><p>First, you will need to install and setup CocoaPods, unless you already have.</p></div>
+<div class="paragraph"><p>이미 설치되어있지 않으시다면 먼저 CocoaPods를 설치하고 설정해야 합니다.</p></div>
 <div class="listingblock">
 <div class="content monospaced">
 <pre>$ sudo gem install cocoapods
 $ pod setup</pre>
 </div>
 </div>
-<div class="paragraph"><p>The RubyMotion CocoaPods integration also comes as a gem.</p></div>
+<div class="paragraph"><p>RubyMotion의 CocoaPods도 gem으로 설치 가능합니다.</p></div>
 <div class="listingblock">
 <div class="content monospaced">
 <pre>$ sudo gem install motion-cocoapods</pre>
 </div>
 </div>
-<div class="paragraph"><p>The code lives in the <a href="http://github.com/HipByte/motion-cocoapods">HipByte/motion-cocoapods</a> GitHub repository.</p></div>
+<div class="paragraph"><p>코드는 GitHub 저장소 The code lives in the <a href="http://github.com/HipByte/motion-cocoapods">HipByte/motion-cocoapods</a> 에서 공개 중 입니다.</p></div>
 </div>
 </div>
 <div class="sect1">
 <span class="anchor_helper" id="_usage"></span><h2 data-anchor="_usage">3. Usage</h2>
 <div class="sectionbody">
-<div class="paragraph"><p>You will need to require the gem inside the <em>Rakefile</em> of your project.</p></div>
+<div class="paragraph"><p>프로젝트의 <em>Rakefile</em> 안에 gem을 require해야 합니다.</p></div>
 <div class="listingblock">
 <div class="content monospaced">
 <pre>require 'rubygems'
 require 'motion-cocoapods'</pre>
 </div>
 </div>
-<div class="paragraph"><p>Once you do that, you can simply use the <span class="monospaced">pods</span> method of the application configuration object to describe the Pods you want to require, by using the same expressions as you would do in a regular Podfile.</p></div>
-<div class="paragraph"><p>For instance, if you want to require the <span class="monospaced">JSONKit</span> Pod.</p></div>
+<div class="paragraph"><p>이제 애플리케이션 설정에서 Podfile을 사용 하던 것 처럼 간단히 <span class="monospaced">pods</span> 메소드를 사용해 require할 Pods를 적을 수 있습니다.</p></div>
+<div class="paragraph"><p>예를들어 <span class="monospaced">JSONKit</span> Pod를 require하고 싶으시다면,</p></div>
 <div class="listingblock">
 <div class="content monospaced">
 <pre>Motion::Project::App.setup do |app|
@@ -1128,8 +1128,8 @@ require 'motion-cocoapods'</pre>
 end</pre>
 </div>
 </div>
-<div class="paragraph"><p>That’s all you have to do.</p></div>
-<div class="paragraph"><p>The next time you build your project, the <span class="monospaced">JSONKit</span> sources will be downloaded then built and linked against your application executable. If you require a Pod that has dependencies, they will also be properly honored.</p></div>
+<div class="paragraph"><p>이 것이 전부 입니다.</p></div>
+<div class="paragraph"><p>다음에 프로젝트의 애플리케이션 실행파일을 빌드할때 <span class="monospaced">JSONKit</span> 를 다운로드해 빌드, 링크됩니다. Pod안에 다른 Pod의 의존성이 필요한 경우에도 재대로 동작합니다.</p></div>
 </div>
 </div>
 </div>
