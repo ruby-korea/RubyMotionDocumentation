@@ -46,7 +46,7 @@ end
 Adding source files
 -------------------
 
-Gem은 RubyMotion프로젝트에 파일을 간단히 추가할 수 있습니다. +Motion::Project::App+블록을 열어 +app.files+에 파일경로를 추가하기만 하면 됩니다.
+Gem은 RubyMotion프로젝트에 파일을 간단히 추가할 수 있습니다. +Motion::Project::App+ 블록을 열어 +app.files+ 에 파일경로를 추가하기만 하면 됩니다.
 
 예를들어 RubyMotion프로젝트에 추가할 'lib/foo' 디렉토리 안에 파일들을 가지고있는 +foo+ gem있다고 합시다.
 
@@ -118,7 +118,7 @@ Adding +rake+ tasks
 
 RubyMotion gem은 새로운 +rake+ 태스크를 추가함으로써 쉽게 빌드시스템을 확장할 수도 있습니다.
 
-RubyMotion 프로젝트의 'Rakefile'에서 'foo.rb' 파일을 require 하므로, 태스크를 거기에 정의하기만 하면 됩니다.
+RubyMotion 프로젝트의 'Rakefile' 에서 'foo.rb' 파일을 require 하므로, 태스크를 거기에 정의하기만 하면 됩니다.
 
 예를들어 +foo+ 태스크에 상상의 서비스를 연결하려면 이렇게 하면 됩니다.
 
