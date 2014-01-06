@@ -1789,7 +1789,14 @@ date2 = NSDate.date</pre>
 <span class="anchor_helper" id="_immediate_types"></span><h3 data-anchor="_immediate_types">4.3. Immediate Types</h3>
 <div class="paragraph"><p>The <span class="monospaced">Fixnum</span> and <span class="monospaced">Float</span> types in RubyMotion are immediates; they don’t use memory resources to be created. The runtime uses a technique called <a href="http://en.wikipedia.org/wiki/Tagged_pointer">tagged pointers</a> to implement this.</p></div>
 <div class="paragraph"><p>The ability to use these types without affecting the memory usage is important as a sizable part of a real-world app is spent in control drawing, which can make intensive use of arithmetic algorithms.</p></div>
-<div class="paragraph"><p>INFO: Since iOS is using a 32-bit architecture, immediate types are encoded on a 30-bit pointer (we need 2 bits for type information). On OS X, immediate types will be encoded on a 62-bit pointer when the program runs on recent Mac computers, which are powered by a 64-bit architecture.</p></div>
+<div class="admonitionblock">
+<table><tr>
+<td class="icon">
+<img src="../../icons/note.png" alt="Note">
+</td>
+<td class="content">Since iOS is using a 32-bit architecture, immediate types are encoded on a 30-bit pointer (we need 2 bits for type information). On OS X, immediate types will be encoded on a 62-bit pointer when the program runs on recent Mac computers, which are powered by a 64-bit architecture.</td>
+</tr></table>
+</div>
 </div>
 </div>
 </div>

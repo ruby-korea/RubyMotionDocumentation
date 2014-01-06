@@ -1066,8 +1066,8 @@ pre {
 <h1>Debugging RubyMotion applications</h1>
 <span id="author">Laurent Sansonetti</span><br><span id="email" class="monospaced">&lt;<a href="mailto:lrz@hipbyte.com">lrz@hipbyte.com</a>&gt;</span><br><div id="preamble">
 <div class="sectionbody">
-<div class="paragraph"><p>This article covers how to debug RubyMotion projects using the builtin debugging facility. RubyMotion apps can be debugged either on the simulator or the device.</p></div>
-<div class="paragraph"><p>At the time of this writing, the debugging experience in RubyMotion is still a work in progress, and this document might change any time to reflect the progresses that have been made in this regard.</p></div>
+<div class="paragraph"><p>이 문서는 RubyMotion에 내장된 디버그 기능을 사용해 디버그하는 방법에 대해 다룹니다. RubyMotion 앱은 시뮬레이터와 디바이스 양쪽 모두에서 디버그 가능합니다.</p></div>
+<div class="paragraph"><p>이 문서를 작성하는 시점에도, RubyMotion의 디버깅 사용자경험은 계속 개발중이며 이 문서는 언제든지 변경될 수 있습니다.</p></div>
 </div>
 </div>
 <div id="toc">
@@ -1092,14 +1092,14 @@ pre {
 <div class="sect1">
 <span class="anchor_helper" id="_synopsis"></span><h2 data-anchor="_synopsis">1. Synopsis</h2>
 <div class="sectionbody">
-<div class="paragraph"><p>The RubyMotion debugger is based on <a href="http://www.gnu.org/software/gdb/">GDB</a>, the GNU Project Debugger.</p></div>
-<div class="paragraph"><p>GDB is traditionally used to debug programs written in C-based languages, however, RubyMotion brings Ruby support to GDB, allowing it to connect and introspect RubyMotion processes.</p></div>
+<div class="paragraph"><p>RubyMotion의 디버거는 <a href="http://www.gnu.org/software/gdb/">GDB</a> (GNU Project Debugger)를 기초로 합니다.</p></div>
+<div class="paragraph"><p>GDB는 보통 C기반 언어들의 디버그 프로그램입니다만, RubyMotion은 GDB에 RubyMotion프로세스를 연결하고 살펴보기 위해 루비를 지원하도록 했습니다.</p></div>
 <div class="admonitionblock">
 <table><tr>
 <td class="icon">
 <img src="../../icons/note.png" alt="Note">
 </td>
-<td class="content">The GDB support is at this point experimental and also quite low-level. Our goal is to build a higher-level, friendlier debugger on top of GDB that will provide a better experience for Ruby developers.</td>
+<td class="content">지금의 GDB지원은 실험적이고 꽤나 저레벨입니다. 개발진의 목표는 루비 개발자들에게 좀더 나은 사용자 경험을 제공하도록 좀 더 우호적이고 고레벨인 디버거를 만드는 것입니다.</td>
 </tr></table>
 </div>
 <div class="admonitionblock">
@@ -1107,31 +1107,31 @@ pre {
 <td class="icon">
 <img src="../../icons/note.png" alt="Note">
 </td>
-<td class="content">At the time of this writing, <a href="http://lldb.llvm.org/">LLDB</a> (Apple’s new debugger) is not ready yet for prime time. We might however eventually switch to LLDB once it matures.</td>
+<td class="content">이 글을 쓰는 시점에 <a href="http://lldb.llvm.org/">LLDB</a>(에플의 새로운 디버거)는 아직 성숙하지 못합니다. LLDB가 좀더 성숙되면 전환할 수도 있습니다.</td>
 </tr></table>
 </div>
-<div class="paragraph"><p>This document aims at covering the main features that one might need in order to debug a RubyMotion app with GDB. This document is not a complete GDB manual. We highly recommend reading the official GDB documentation if an exhaustive guide is needed.</p></div>
+<div class="paragraph"><p>이 문서는 GDB로 RubyMotion 앱을 디버깅하기위한 주요 기능들에 초점을 맞추었습니다. 이 문서는 GDB의 전채 매뉴얼이 아닙니다. 추가적인 가이드가 필요할 경우 공식 GDB 문서를 읽는 것을 추천드립니다.</p></div>
 </div>
 </div>
 <div class="sect1">
 <span class="anchor_helper" id="_debugging_symbols"></span><h2 data-anchor="_debugging_symbols">2. Debugging symbols</h2>
 <div class="sectionbody">
-<div class="paragraph"><p>The RubyMotion compiler implements the <a href="http://www.dwarfstd.org">DWARF</a> debugging format metadata for the Ruby language. This allows external programs such as debuggers or profilers to retrieve source-level information about an existing RubyMotion application.</p></div>
-<div class="paragraph"><p>The metadata is saved under a <em>.dSYM</em> bundle file at the same level as the <em>.app</em> bundle, in the <em>build</em> directory of your project.</p></div>
-<div class="paragraph"><p>Both <span class="monospaced">development</span> and <span class="monospaced">release</span> modes have debugging symbols, however, as the <span class="monospaced">release</span> mode activates compilation optimizations, the debugging experience will be better under the <span class="monospaced">development</span> mode. For example, in the <span class="monospaced">release</span> mode, local variables might not be accessible in the debugger as they are optimized to fit into CPU registers.</p></div>
+<div class="paragraph"><p>RubyMotion 컴파일러는 루비언어를 위한 <a href="http://www.dwarfstd.org">DWARF</a> 포멧 메타데이터로 구현 되었습니다. DWARF는 디버거나 프로파일러같은 것으로 RubyMotion 어플리케이션의 소스레벨 정보를 검색할수 있습니다.</p></div>
+<div class="paragraph"><p>메타데이터는 프로젝트의 <em>build</em> 디렉토리안의 <em>.app</em> 묶음과 같은레벨의 '.dSYM'묶음에 저장됩니다.</p></div>
+<div class="paragraph"><p><span class="monospaced">development</span> 와 <span class="monospaced">release</span> 양쪽 다 디버깅 심볼을 가지고 있습니다만, <span class="monospaced">release</span> 에서는 컴파일 최적화가 이루어져 <span class="monospaced">development</span> 모드가 더 나은 디버깅을 제공합니다. 예를들어, <span class="monospaced">release</span> 모드에서는, CPU 레지스터에 최적화되기 때문에 디버거가 지역변수에 접근할 수 없을겁니다.</p></div>
 </div>
 </div>
 <div class="sect1">
 <span class="anchor_helper" id="_starting_the_debugger"></span><h2 data-anchor="_starting_the_debugger">3. Starting the debugger</h2>
 <div class="sectionbody">
-<div class="paragraph"><p>In order to start the debugger, the <span class="monospaced">debug</span> option can be set to any value on the appropriate rake target.</p></div>
-<div class="paragraph"><p>When working with the <span class="monospaced">simulator</span> rake task, the debugger will directly attach itself to the app and replace the interactive shell (REPL).</p></div>
+<div class="paragraph"><p>디버거를 시작하기위해서, 적당한 rake 대상에 <span class="monospaced">debug</span> 옵션을 설정할 수 있습니다.</p></div>
+<div class="paragraph"><p><span class="monospaced">simulator</span> rake 테스크에 디버그를 하면, 디버거는 대화형 셸(REPL) 대신 어플리케이션에 직접 붙습니다.</p></div>
 <div class="listingblock">
 <div class="content monospaced">
 <pre>$ rake simulator debug=1</pre>
 </div>
 </div>
-<div class="paragraph"><p>When working with the <span class="monospaced">device</span> rake task, the build system will start the iOS debugging server on the device then remotely attach the debugger on your shell right after the application has been deployed on the device.</p></div>
+<div class="paragraph"><p><span class="monospaced">device</span> rake 테스크에 디버그를 하면, 빌드 시스템은 어플리케이션을 디바이스에 배포한다음 iOS 디버깅 서버를 시작하여 디버거 셸을 원격으로 붙입니다.</p></div>
 <div class="listingblock">
 <div class="content monospaced">
 <pre>$ rake device debug=1</pre>
@@ -1139,8 +1139,8 @@ pre {
 </div>
 <div class="sect2">
 <span class="anchor_helper" id="_entering_commands_before_starting"></span><h3 data-anchor="_entering_commands_before_starting">3.1. Entering commands before starting</h3>
-<div class="paragraph"><p>By default the application will run right after the debugger is started. Sometimes you might want to perform commands before the application starts.</p></div>
-<div class="paragraph"><p>This can be done by setting the <span class="monospaced">no_continue</span> option to any value. If set, the debugger will not continue to the application and will give you a chance to change the debugging environment (for example, setting a breakpoint). You can type the <span class="monospaced">continue</span> command once you are ready to move on.</p></div>
+<div class="paragraph"><p>기본설정에선 어플리케이션은 디버거가 시작한 직후에 실행됩니다. 가끔 어플리케이션이 시작되기전에 명령어를 시작하고 싶을 경우가 있을 것 입니다.</p></div>
+<div class="paragraph"><p><span class="monospaced">no_continue</span> 옵션에 아무값이나 주면 그렇게 할 수 있습니다. <span class="monospaced">no_continue</span> 옵션이 설정되면, 디버거는 어플리케이션을 계속하지 않고 디버그 환경을 변경(예를들어, 프레이크포인트의 지정등)을 할 수 있게합니다. 진행할 준비가 되었다면 <span class="monospaced">continue</span> 명령어를 입력하시면 됩니다.</p></div>
 <div class="listingblock">
 <div class="content monospaced">
 <pre>$ rake debug=1 no_continue=1
@@ -1154,9 +1154,9 @@ Continuing.</pre>
 </div>
 <div class="sect2">
 <span class="anchor_helper" id="_saving_commands"></span><h3 data-anchor="_saving_commands">3.2. Saving commands</h3>
-<div class="paragraph"><p>It is also possible to save on disk commands you want the debugger to perform automatically when running your application.</p></div>
-<div class="paragraph"><p>The debugger will honor the <em>debugger_cmds</em> file in the root directory of your project. If this file exists, its content will be interpreted as a list of debugger commands separated by a newline character.</p></div>
-<div class="paragraph"><p>Only use the name of the file not the full path : hello_view.rb:10 and not app/hello_view.rb:10.</p></div>
+<div class="paragraph"><p>어플리케이션이 실행될때 자동으로 디스크에 저장된 명령어들을 실행하는 것도 가능합니다.</p></div>
+<div class="paragraph"><p>디버거는 프로젝트 루트 디랙토리의 <em>debugger_cmds</em> 파일을 확인합니다. 파일이 있다면, 파일의 내용은 개행 문자로 구분된 디버거 명령어의 목록으로써 해석됩니다.</p></div>
+<div class="paragraph"><p>풀패스가 아닌 파일이름만 사용하세요.(hello_view.rb:10 입니다. app/hello_view.rb:10 가 아니라)</p></div>
 <div class="listingblock">
 <div class="content monospaced">
 <pre>$ echo "break hello_view.rb:10" &gt; debugger_cmds
@@ -1170,14 +1170,14 @@ $ rake debug=1
 <div class="sect1">
 <span class="anchor_helper" id="_managing_breakpoints"></span><h2 data-anchor="_managing_breakpoints">4. Managing breakpoints</h2>
 <div class="sectionbody">
-<div class="paragraph"><p>To set a breakpoint to a given location in the source code, use the <span class="monospaced">break</span> command and pass the location where the debugger should break, using the <span class="monospaced">file:line</span> notation.</p></div>
-<div class="paragraph"><p>As an example, the following command sets a breakpoint on the 10th line of the <em>hello_view.rb</em> file.</p></div>
+<div class="paragraph"><p>소스코드의 특정위치를 브레이크 포인트로 지정하려면, <span class="monospaced">break</span> 명령어에 디버거가 멈출 위치를 <span class="monospaced">file:line</span> 형식으로 넘기세요.</p></div>
+<div class="paragraph"><p>예를들면, 밑의 명령어는 <em>hello_view.rb</em> 의 10번째 줄을 브레이크 포인트로 설정합니다.</p></div>
 <div class="listingblock">
 <div class="content monospaced">
 <pre>$ break hello_view.rb:10</pre>
 </div>
 </div>
-<div class="paragraph"><p>The <span class="monospaced">info breakpoints</span> command can be used to list the breakpoints that have been set in the current debugger environment.</p></div>
+<div class="paragraph"><p><span class="monospaced">info breakpoints</span> 명령어로 현재 디버그 환경의 브레이크 포인트들의 목록을 확인 할 수 있습니다.</p></div>
 <div class="listingblock">
 <div class="content monospaced">
 <pre>(gdb) info breakpoints
@@ -1189,8 +1189,8 @@ Num Type           Disp Enb Address    What
 [...]</pre>
 </div>
 </div>
-<div class="paragraph"><p>As you can see our breakpoint <span class="monospaced">hello_view.rb:10</span> is right there and is enabled. The <span class="monospaced">enable</span> and <span class="monospaced">disable</span> commands can respectively enable or disable a given breakpoint using its number.</p></div>
-<div class="paragraph"><p>Since our breakpoint is number 3 in the list, we can disable it like this:</p></div>
+<div class="paragraph"><p>보시는 것 처럼 <span class="monospaced">hello_view.rb:10</span> 브레이크 포인트가 있고 활성상태인것을 알 수 있습니다. <span class="monospaced">enable</span> 과 <span class="monospaced">disable</span> 명령어는 숫자를 사용해 브레이크 포인트를 각기 활성 / 비활성 상태로 만듭니다.</p></div>
+<div class="paragraph"><p>위의 브레이크 포인트는 목록에서 3번이므로, 이렇게 비활성화 할 수 있습니다.</p></div>
 <div class="listingblock">
 <div class="content monospaced">
 <pre>(gdb) disable 3</pre>
@@ -1201,8 +1201,8 @@ Num Type           Disp Enb Address    What
 <div class="sect1">
 <span class="anchor_helper" id="_getting_the_backtrace"></span><h2 data-anchor="_getting_the_backtrace">5. Getting the backtrace</h2>
 <div class="sectionbody">
-<div class="paragraph"><p>Once you hit a breakpoint, it is often interesting to check out the execution backtrace, which will tell you where the method is called from.</p></div>
-<div class="paragraph"><p>This can be done by using the <span class="monospaced">backtrace</span> command.</p></div>
+<div class="paragraph"><p>브레이크 포인트에 도달하면, 주로 메소드가 어디에서 불려 졌는지 확인하기위해 실행 백트레이스를 확인합니다.</p></div>
+<div class="paragraph"><p>이 일은 <span class="monospaced">backtrace</span> 명령어를 사용하여 할 수 있습니다.</p></div>
 <div class="listingblock">
 <div class="content monospaced">
 <pre>Breakpoint 4, rb_scope__drawRect:__ (self=0x43a00003, rect=0x9353a10) at hello_view.rb:10
@@ -1221,30 +1221,30 @@ Num Type           Disp Enb Address    What
 #10 0x01e0a0e2 in CA::Layer::display_if_needed ()</pre>
 </div>
 </div>
-<div class="paragraph"><p>Backtrace frames in your code can be identified with the <span class="monospaced">rb_scope__</span> prefix and the file and line information.</p></div>
+<div class="paragraph"><p>백트레이스 프레임의 소스 코드 부분은 주소가 <span class="monospaced">rb_scope__</span> 로 시작하고 파일과 줄번호 정보가 있는 줄을 보시면 됩니다.</p></div>
 <div class="sect2">
 <span class="anchor_helper" id="_frames"></span><h3 data-anchor="_frames">5.1. Frames</h3>
-<div class="paragraph"><p>Here, the very first frame in the backtrace is the method defined in the breakpoint location: <span class="monospaced">drawRect:</span>. The other frames below the breakpoint are native iOS calls. As we can see, our <span class="monospaced">drawRect:</span> method is called by the <span class="monospaced">UIView</span> class, which makes sense.</p></div>
-<div class="paragraph"><p>The <span class="monospaced">frame</span> command lets you switch to a specific frame in the backtrace. By default you will be at the top frame (#0), but assuming you want to go down to frame #4 in order to inspect its context, you can type the following command to do so.</p></div>
+<div class="paragraph"><p>백트레이스의 제일 처음 프레임은 브레이크 포인트 위치의 메소드 <span class="monospaced">drawRect:</span> 입니다. 밑의 다른 프레임들은 iOS의 네이티브 콜들이네요. 보시는 것처럼 <span class="monospaced">drawRect:</span> 메소드는 <span class="monospaced">UIView</span> 에 의해 불리어 집니다.</p></div>
+<div class="paragraph"><p><span class="monospaced">frame</span> 명령어로 특정 프레임으로 바꿀 수 있습니다. 기본값으로 제일 위의 프레임(#0)으로 바꾸지만, 컨택스트를 살펴보기위해 프레임 #4로 바꾸길 원한다면, 다음 명령어로 할 수 있습니다.</p></div>
 <div class="listingblock">
 <div class="content monospaced">
 <pre>(gdb) frame 4
 [...]</pre>
 </div>
 </div>
-<div class="paragraph"><p>Obviously it mainly matters when you want to go down to a specific Ruby-defined location in the backtrace.</p></div>
+<div class="paragraph"><p>당연히 백트레이스의 Ruby로 정의된 부분으로 들어갈 때 주로 사용됩니다.</p></div>
 </div>
 <div class="sect2">
 <span class="anchor_helper" id="_threads"></span><h3 data-anchor="_threads">5.2. Threads</h3>
-<div class="paragraph"><p>The <span class="monospaced">backtrace</span> command only returns the backtrace of the current thread. When dealing with a multithreaded program, you may sometimes want to print the backtrace of all running threads, for instance when you are debugging a race condition.</p></div>
-<div class="paragraph"><p>The following command will print the backtrace of all the running threads in the terminal.</p></div>
+<div class="paragraph"><p><span class="monospaced">backtrace</span> 명령어는 현재 쓰레드의 백트레이스만 반환합니다. 멀티쓰레드 프로그램을 다룬다면, 전채 쓰레드의 백트레이스가 필요할때가 있습니다. 예를 들어 경주의 상태를 디버깅 할 경우가 있죠.</p></div>
+<div class="paragraph"><p>다음 명령어는 터미널에서 실행되는 모든 쓰레드의 백트레이스를 출력합니다.</p></div>
 <div class="listingblock">
 <div class="content monospaced">
 <pre>(gdb) thread apply all backtrace
 [...]</pre>
 </div>
 </div>
-<div class="paragraph"><p>Similar to switching frames, the debugger will let you switch threads using the <span class="monospaced">thread</span> command. This can be useful if you want to inspect a specific Ruby method frame in another running thread. The following command will switch the debugger prompt to the thread #4.</p></div>
+<div class="paragraph"><p>디버거에서 프레임 전환과 같은 방식으로, <span class="monospaced">thread</span> 명령어를 사용해 쓰레드를 전환 할수 있습니다. 실행된 다른 쓰레드에서 사용되는 루비 메소드를 살펴보려 할때 유용하겠죠. 다음 명령어는 디버거 프롬프트를 쓰레드 #4로 이동합니다.</p></div>
 <div class="listingblock">
 <div class="content monospaced">
 <pre>(gdb) thread 4
@@ -1257,12 +1257,12 @@ Num Type           Disp Enb Address    What
 <div class="sect1">
 <span class="anchor_helper" id="_inspecting_objects"></span><h2 data-anchor="_inspecting_objects">6. Inspecting objects</h2>
 <div class="sectionbody">
-<div class="paragraph"><p>After checking the backtrace, you may want to inspect the objects around. The debugger will let you print them using specialized commands.</p></div>
+<div class="paragraph"><p>백트레이스를 확인한 후, 객체를 확인할 필요가 있을 것 입니다. 디버거는 특별한 커맨드를 사용해 객체를 출력해 줍니다.</p></div>
 <div class="sect2">
 <span class="anchor_helper" id="_local_variables"></span><h3 data-anchor="_local_variables">6.1. Local variables</h3>
-<div class="paragraph"><p>We just hit our breakpoint defined in the <span class="monospaced">drawRect:(rect)</span> method. As you can see from the breakpoint, we are inside a function that accepts two arguments: <span class="monospaced">self</span> and <span class="monospaced">rect</span>. <span class="monospaced">rect</span> is definitely our <span class="monospaced">CGRect</span> argument, but what is <span class="monospaced">self</span>?</p></div>
-<div class="paragraph"><p>In RubyMotion, the <span class="monospaced">self</span> argument is a pointer to the <span class="monospaced">self</span> object exposed in Ruby, which represents a reference to the receiver of the method. In the debugger, <span class="monospaced">self</span> is visible as the first argument of the method.</p></div>
-<div class="paragraph"><p>We can inspect the values of both <span class="monospaced">self</span> and <span class="monospaced">rect</span> by using the <span class="monospaced">print-ruby-object</span> command. This RubyMotion-defined command sends the <span class="monospaced">inspect</span> message to the given object and returns its value. The command can also be called using the <span class="monospaced">pro</span> shortcut which we will use as a convenience.</p></div>
+<div class="paragraph"><p>방금 브레이크 포인트의 <span class="monospaced">drawRect:(rect)</span> 메소드 선언부에 도달했습니다. 브레이크 포인트에서 보시는것 처럼, 두 인자 <span class="monospaced">self</span> 와 <span class="monospaced">rect</span> 를 받는 펑션의 안에 있죠. <span class="monospaced">rect</span> 는 누가 봐도 <span class="monospaced">CGRect</span> 형의 인자입니다. <span class="monospaced">self</span> 는 무엇일까요?</p></div>
+<div class="paragraph"><p>RubyMotion에서 <span class="monospaced">self</span> 인자는 메소드의 수신자를 참조하는 루비로 노출된 객체의 포인터입니다. 디버거에서, <span class="monospaced">self</span> 는 메소드의 첫번째 인자로 보입니다.</p></div>
+<div class="paragraph"><p><span class="monospaced">print-ruby-object</span> 명령어를 이용해 <span class="monospaced">self</span> 와 <span class="monospaced">rect</span> 의 값들을 살펴볼 수 있습니다. 이 RubyMotion에서 정의된 명령어는 해당 객채에 <span class="monospaced">inspect</span> 메소드를 호출해 그 결과를 돌려줍니다. 이 명령어는 편의를 위해 단축명령 <span class="monospaced">pro</span> 로도 부를 수 있습니다.</p></div>
 <div class="listingblock">
 <div class="content monospaced">
 <pre>Breakpoint 4, rb_scope__drawRect:__ (self=0x43a00003, rect=0x9353a10) at hello_view.rb:10
@@ -1273,7 +1273,7 @@ Num Type           Disp Enb Address    What
 #&lt;CGRect origin=#&lt;CGPoint x=0.0 y=0.0&gt; size=#&lt;CGSize width=320.0 height=480.0&gt;&gt;</pre>
 </div>
 </div>
-<div class="paragraph"><p>The list of local variables can be printed using the <span class="monospaced">info locals</span> command. The list will also include the addresses of each local variable.</p></div>
+<div class="paragraph"><p>지역변수의 목록은 <span class="monospaced">info locals</span> 명령어로 출력할 수 있습니다. 목록에는 지역변수의 어드레스 정보도 나옵니다.</p></div>
 <div class="listingblock">
 <div class="content monospaced">
 <pre>(gdb) info locals
@@ -1285,7 +1285,7 @@ text = (VALUE) 0x75a9020
 font = (VALUE) 0x4</pre>
 </div>
 </div>
-<div class="paragraph"><p>These local variables can also be individually inspected on the terminal by using the <span class="monospaced">pro</span> command.</p></div>
+<div class="paragraph"><p>지역 변수들은 <span class="monospaced">pro</span> 명령어를 이용해 각각 살펴 볼 수 있습니다.</p></div>
 <div class="listingblock">
 <div class="content monospaced">
 <pre>(gdb) pro bgcolor
@@ -1299,15 +1299,15 @@ nil</pre>
 </div>
 <div class="sect2">
 <span class="anchor_helper" id="_instance_variables"></span><h3 data-anchor="_instance_variables">6.2. Instance variables</h3>
-<div class="paragraph"><p>Instance variables of an object can be printed using the <span class="monospaced">print-ruby-ivar</span> command, or its convenience shortcut <span class="monospaced">pri</span>.</p></div>
-<div class="paragraph"><p>If the command is given two arguments, the first one is the object on which the instance variable will be retrieved, and the second one must be a string representing the instance variable that you want to get. Make sure to include the <span class="monospaced">@</span> character in the name.</p></div>
+<div class="paragraph"><p>오브젝트의 인스턴스 변수는 <span class="monospaced">print-ruby-ivar</span> 나 단축명령 <span class="monospaced">pri</span> 명령어를 이용해 출력 할 수 있습니다.</p></div>
+<div class="paragraph"><p>인자를 두개 넘긴다면, 첫번째 인자는 인스턴스 변수를 찾을 객체가 되고, 두번째 인자는 찾으려는 인스턴스 변수를 나타내는 스트링이 됩니다. 이름에 <span class="monospaced">@</span> 가 있는지 확인하세요.</p></div>
 <div class="listingblock">
 <div class="content monospaced">
 <pre>(gdb) pri self "@touches"
 2</pre>
 </div>
 </div>
-<div class="paragraph"><p>When called with only one argument, the command assumes that you want to retrieve the given instance variable from <span class="monospaced">self</span>.</p></div>
+<div class="paragraph"><p>인자를 하나만 사용해 부른다면, 명령어는 <span class="monospaced">self</span> 에서 주어진 인스턴스 변수를 찾습니다.</p></div>
 <div class="listingblock">
 <div class="content monospaced">
 <pre>(gdb) pri "@touches"
@@ -1320,7 +1320,7 @@ nil</pre>
 <div class="sect1">
 <span class="anchor_helper" id="_control_flow"></span><h2 data-anchor="_control_flow">7. Control flow</h2>
 <div class="sectionbody">
-<div class="paragraph"><p>The <span class="monospaced">next</span> command will continue the execution of the program until the next source-level location. This is usually the very next line in the Ruby source code. You should see in the terminal the relevant source code line.</p></div>
+<div class="paragraph"><p><span class="monospaced">next</span> 명령어는 다음 소스레벨 위치가 나올때까지 진행하게 합니다. 이 다음 위치는 보통 루비 소스코드의 바로 밑 줄입니다. 터미널에서 관련된 소스 코드 라인을 확인 할 수 있습니다.</p></div>
 <div class="listingblock">
 <div class="content monospaced">
 <pre>(gdb) next
@@ -1333,14 +1333,14 @@ nil</pre>
 19          text.drawAtPoint(CGPoint.new(10, 20), withFont:font)</pre>
 </div>
 </div>
-<div class="paragraph"><p>The <span class="monospaced">continue</span> command will continue the execution of the program until it reaches a breakpoint.</p></div>
+<div class="paragraph"><p><span class="monospaced">continue</span> 명령어는 브레이크 포인트가 나올때까지 실행을 진행합니다.</p></div>
 <div class="listingblock">
 <div class="content monospaced">
 <pre>(gdb) continue
 [...]</pre>
 </div>
 </div>
-<div class="paragraph"><p>When the program runs, you can always stop its execution and go back to the debugger prompt by typing the <span class="monospaced">control+c</span> (<span class="monospaced">^C</span>) keyboard shortcut.</p></div>
+<div class="paragraph"><p>프로그램이 실행될때, 언제든 키보드 단축키 <span class="monospaced">control+c</span> (<span class="monospaced">^C</span>) 로 실행을 멈추고 디버거 프롬프트로 돌아갈 수 있습니다.</p></div>
 <div class="listingblock">
 <div class="content monospaced">
 <pre>^C
@@ -1349,7 +1349,7 @@ Program received signal SIGINT, Interrupt.
 (gdb)</pre>
 </div>
 </div>
-<div class="paragraph"><p>If you want to quit the debugger, just type the <span class="monospaced">quit</span> command and confirm that you want to exit. It will terminate the application and return you back to the shell prompt.</p></div>
+<div class="paragraph"><p>디버거를 종료하려면, <span class="monospaced">quit</span> 명령어를 입력하고 <span class="monospaced">y</span> 를 입력하시면 됩니다. 이 명령어는 어플리케이션을 종료하고 셸 프롬프트를 돌려줍니다.</p></div>
 <div class="listingblock">
 <div class="content monospaced">
 <pre>(gdb) quit
