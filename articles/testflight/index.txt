@@ -2,32 +2,32 @@ Submit RubyMotion Apps to TestFlight
 ====================================
 Laurent Sansonetti <lrz@hipbyte.com>
 
-In this article we will cover how you can submit development builds of your RubyMotion apps to http://testflightapp.com[TestFlight].
+이 문서는 http://testflightapp.com[TestFlight] 를 통해 RubyMotion 앱의 개발빌드를 전송하는 방법을 다룹니다.
 
 Synopsis
 --------
 
-TestFlight is a platform that you can use to distribute development builds of your apps to you team members. You receive feedback, console logs and crash reports automatically. It can be very useful during the development cycle of an app.
+TestFlight 는 앱의 개발빌드를 팀맴버에게 전송할때 사용하는 플렛폼입니다. 피드백, 콘솔로그 충돌 리포트를 자동으로 받을 수 있습니다. 앱의 개발과정에 매우 우용하게 사용할 수 있습니다.
 
-You can create an account on http://testflightapp.com[http://testflightapp.com]. It's free.
+http://testflightapp.com[http://testflightapp.com]에서 무료로 계정을 만들 수 있습니다.
 
 Installation
 ------------
 
-We recommend the use of the +motion-testflight+ gem which provides a seamless experience.
+원활한 사용자경험을 제공하는 +motion-testflight+ 를 사용하시길 권장힙니다.
 
 ----
 $ gem install motion-testflight
 ----
 
-The source code of the +motion-testflight+ gem lives on the http://github.com/HipByte/motion-testflight[HipByte/motion-testflight] GitHub repository.
++motion-testflight+ gem의 소스코드는 GitHub의 http://github.com/HipByte/motion-testflight[HipByte/motion-testflight] 에 있습니다.
 
 Unpack the SDK
 --------------
 
-You will need to download the TestFlight SDK package from http://testflightapp.com/sdk/download and unpack it into the 'vendor' directory of your RubyMotion project.
+http://testflightapp.com/sdk/download 에서 TestFlight SDK를 다운로드해 RubyMotion 프로젝트의 'vendor' 디렉토리에 압축을 푸세요.
 
-The directory structure you need is this:
+디렉토리 구조는 다음과 같습니다.
 
 ----
 $ ls vendor/TestFlight
@@ -38,16 +38,16 @@ TestFlight.h			release_notes.txt
 Change your project configuration
 ---------------------------------
 
-You will need to change the 'Rakefile' of your project in order to set up the gem.
+젬을 설정하기위해 'Rakefile'를 변경할 필요가 있습니다.
 
-First, you need to require the gem. Add the following line at the beginning of the file, right after the other +require+ statements:
+먼저, gem을 require합니다. 파일의 위의 다른 +require+ 구문들 바로 밑에 다음 줄들을 넣으세요.
 
 ----
 require 'rubygems'
 require 'motion-testflight'
 ----
 
-Now that the gem is loaded, it's time to configure it. Inside your application configuration block, add the following lines:
+이제 젬이 로드 되었으니, 설정할 시간입니다. 어플리케이션 설정 블럭에 밑에 줄들을 넣으세요.
 
 ----
 app.testflight.sdk = 'vendor/TestFlight'
@@ -56,9 +56,9 @@ app.testflight.team_token = '<insert your team token here>'
 app.testflight.app_token = '<insert your app token here>' *(TestFlight SDK 1.2 and greater)*
 ----
 
-You can retrieve the values for +api_token+ and +team_token+ from your TestFlight account page, and the value for your +app_token+ from your App page.
++api_token+ 과 +team_token+ 은 TestFlight의 account 페이지에서 찾으실 수 있습니다. +app_token+ 은 App페이지에 있구요.
 
-Optionally, you can use the +distribution_lists+ key if you do want to set up a distribution list for your submissions.
+꼭 해야하는건 아니지만, 제출들(submissions)의 수신 목록을 관리하고 싶다면 +distribution_lists+ 키를 사용 할 수 있습니다.
 
 ----
 app.testflight.distribution_lists = ['CoolKids']
@@ -67,9 +67,9 @@ app.testflight.distribution_lists = ['CoolKids']
 Usage
 -----
 
-You will see that a new rake task is available, +rake testflight+, which will automatically submit a development build of your app to TestFlight.
+이제 새로운 rake 테스크 +rake testflight+ 가 사용할 수 있게되었습니다. 이 명령어는 자동으로 앱의 개발빌드를 TestFlight에 재출합니다.
 
-The +notes+ argument must be provided; its content will be the actual release notes for the submission.
++notes+ 인자는 필수입니다. +notes+ 의 내용은 제출의 실제 릴리즈 노트가 될 것 입니다.
 
 ----
 $ rake testflight notes='zomg!'
