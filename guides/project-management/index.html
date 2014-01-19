@@ -1345,6 +1345,10 @@ $ cd Hello</pre>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><span class="monospaced">embedded_frameworks</span></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">List of 3rd-party frameworks to embed in the application bundle, as an <span class="monospaced">Array</span> of <span class="monospaced">String</span> objects representing filesystem paths. For example, <span class="monospaced">["../MyFramework/framework"]</span>. The default value is an empty array.</p></td>
 </tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><span class="monospaced">external_frameworks</span></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">List of frameworks to use that are outside of <span class="monospaced">/System/Library/Frameworks</span> and should not be embedded, as an <span class="monospaced">Array</span> of <span class="monospaced">String</span> objects representing filesystem paths. For example, <span class="monospaced">["/Library/Frameworks/iTunesLibrary.framework"]</span>. The default value is an empty array.</p></td>
+</tr>
 </tbody>
 </table>
 </div>
