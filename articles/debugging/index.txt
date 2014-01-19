@@ -9,15 +9,15 @@ Laurent Sansonetti <lrz@hipbyte.com>
 Synopsis
 --------
 
-RubyMotion의 디버거는 http://www.gnu.org/software/gdb/[GDB] (GNU Project Debugger)를 기초로 합니다.
+RubyMotion의 디버거는 http://lldb.llvm.org[LLDB] (LLVM Debugger)를 기초로 합니다.
 
-GDB는 보통 C기반 언어들의 디버그 프로그램입니다만, RubyMotion은 GDB에 RubyMotion프로세스를 연결하고 살펴보기 위해 루비를 지원하도록 했습니다.
+LLDB는 보통 C기반 언어들의 디버그 프로그램입니다만, RubyMotion은 LLDB에 RubyMotion프로세스를 연결하고 살펴보기 위해 루비를 지원하도록 했습니다.
 
-NOTE: 지금의 GDB지원은 실험적이고 꽤나 저레벨입니다. 개발진의 목표는 루비 개발자들에게 좀더 나은 사용자 경험을 제공하도록 좀 더 우호적이고 고레벨인 디버거를 만드는 것입니다.
+NOTE: 지금의 LLDB지원은 실험적이고 꽤나 저레벨입니다. 개발진의 목표는 루비 개발자들에게 좀더 나은 사용자 경험을 제공하도록 좀 더 우호적이고 고레벨인 디버거를 만드는 것입니다.
 
-NOTE: 이 글을 쓰는 시점에 http://lldb.llvm.org/[LLDB](에플의 새로운 디버거)는 아직 성숙하지 못합니다. LLDB가 좀더 성숙되면 전환할 수도 있습니다.
+이 문서는 LLDB로 RubyMotion 앱을 디버깅하기위한 주요 기능들에 초점을 맞추었습니다. 이 문서는 LLDB의 전채 매뉴얼이 아닙니다. 추가적인 가이드가 필요할 경우 http://lldb.llvm.org/tutorial.html[the official LLDB documentation] 를 읽는 것을 추천드립니다.
 
-이 문서는 GDB로 RubyMotion 앱을 디버깅하기위한 주요 기능들에 초점을 맞추었습니다. 이 문서는 GDB의 전채 매뉴얼이 아닙니다. 추가적인 가이드가 필요할 경우 공식 GDB 문서를 읽는 것을 추천드립니다.
+NOTE: 이 가이드에서는 모든 디버그 명령어의 긴 이름을 사용할 것 입니다. 짧은 이름의 명령어는 http://lldb.llvm.org/tutorial.html[the official LLDB documentation] 에서 찾으실 수 있습니다.
 
 Debugging symbols
 -----------------
@@ -55,10 +55,12 @@ Entering commands before starting
 ----
 $ rake debug=1 no_continue=1
 [...]
-(gdb) break hello_view.rb:10
-Breakpoint 4 (hello_view.rb:10) pending.
-(gdb) continue
-Continuing.
+(lldb) breakpoint set --file hello_view.rb --line 10
+Breakpoint 3: no locations (pending).
+WARNING:  Unable to resolve breakpoint to any actual locations.
+(lldb) c
+Process 87523 resuming
+[...]
 ----
 
 Saving commands
@@ -71,7 +73,7 @@ Saving commands
 풀패스가 아닌 파일이름만 사용하세요.(hello_view.rb:10 입니다. app/hello_view.rb:10 가 아니라)
 
 ----
-$ echo "break hello_view.rb:10" > debugger_cmds
+$ echo "breakpoint set --file hello_view.rb --line 10" > debugger_cmds
 $ rake debug=1
 [...]
 ----
@@ -79,32 +81,37 @@ $ rake debug=1
 Managing breakpoints
 --------------------
 
-소스코드의 특정위치를 브레이크 포인트로 지정하려면, +break+ 명령어에 디버거가 멈출 위치를 +file:line+ 형식으로 넘기세요.
+소스코드의 특정위치를 브레이크 포인트로 지정하려면, +breakpoint+ 명령어에 디버거가 멈출 위치를 +--line+ 옵션으로 넘기세요.
 
 예를들면, 밑의 명령어는 'hello_view.rb' 의 10번째 줄을 브레이크 포인트로 설정합니다.
 
 ----
-$ break hello_view.rb:10
+(lldb) breakpoint set --file hello_view.rb --line 10
 ----
 
-+info breakpoints+ 명령어로 현재 디버그 환경의 브레이크 포인트들의 목록을 확인 할 수 있습니다.
++breakpoint list+ 명령어로 현재 디버그 환경의 브레이크 포인트들의 목록을 확인 할 수 있습니다.
 
 ----
-(gdb) info breakpoints
-Num Type           Disp Enb Address    What
-1   breakpoint     keep y   0x0003b656 <rb_exc_raise+6>
-2   breakpoint     keep y   0x94c13827 <malloc_error_break+6>
-3   breakpoint     keep y   0x0000b1b0 in rb_scope__drawRect:__ at hello_view.rb:10
-	breakpoint already hit 1 time
-[...]
+(lldb) breakpoint list
+Current breakpoints:
+1: name = 'rb_exc_raise', locations = 1, resolved = 1
+  1.1: where = Hello`rb_exc_raise, address = 0x00049d70, resolved, hit count = 0 
+
+2: name = 'malloc_error_break', locations = 1, resolved = 1
+  2.1: where = libsystem_malloc.dylib`malloc_error_break, address = 0x030b47f9, resolved, hit count = 0 
+
+3: file = 'hello_view.rb', line = 10, locations = 1, resolved = 1
+  3.1: where = Hello`rb_scope__drawRect:__ + 1034 at hello_view.rb:10, address = 0x0000964a, resolved, hit count = 1 
 ----
 
-보시는 것 처럼 +hello_view.rb:10+ 브레이크 포인트가 있고 활성상태인것을 알 수 있습니다. +enable+ 과 +disable+ 명령어는 숫자를 사용해 브레이크 포인트를 각기 활성 / 비활성 상태로 만듭니다.
+
+보시는 것 처럼 +hello_view.rb:10+ 브레이크 포인트가 있고 활성상태인것을 알 수 있습니다. +breakpoint enable+ 과 +breakpoint disable+ 명령어는 숫자를 사용해 브레이크 포인트를 각기 활성 / 비활성 상태로 만듭니다.
 
 위의 브레이크 포인트는 목록에서 3번이므로, 이렇게 비활성화 할 수 있습니다.
 
 ----
-(gdb) disable 3
+(lldb) breakpoint disable 3
+1 breakpoints disabled.
 ----
 
 Getting the backtrace
@@ -112,58 +119,94 @@ Getting the backtrace
 
 브레이크 포인트에 도달하면, 주로 메소드가 어디에서 불려 졌는지 확인하기위해 실행 백트레이스를 확인합니다.
 
-이 일은 +backtrace+ 명령어를 사용하여 할 수 있습니다.
+이 일은 +thread backtrace+ 명령어를 사용하여 할 수 있습니다.
 
 ----
-Breakpoint 4, rb_scope__drawRect:__ (self=0x43a00003, rect=0x9353a10) at hello_view.rb:10
-10	      bgcolor = UIColor.blackColor
-(gdb) backtrace
-#0  rb_scope__drawRect:__ (self=0x43a00003, rect=0x9353a10) at hello_view.rb:10
-#1  0x0000b90f in __unnamed_9 ()
-#2  0x0054b4be in -[UIView(CALayerDelegate) drawLayer:inContext:] ()
-#3  0x01e15a3f in -[CALayer drawInContext:] ()
-#4  0x01e1596b in backing_callback ()
-#5  0x01d27697 in CABackingStoreUpdate_ ()
-#6  0x01e1583c in CA::Layer::display_ ()
-#7  0x01e159ba in -[CALayer _display] ()
-#8  0x01e152b6 in CA::Layer::display ()
-#9  0x01e15994 in -[CALayer display] ()
-#10 0x01e0a0e2 in CA::Layer::display_if_needed ()
+(lldb) thread backtrace
+* thread #1: tid = 0x36e013, 0x0000964a Hello`rb_scope__drawRect:__(self=0x08fa34d0, rect=0x08f8d8a0) + 1034 at hello_view.rb:10, queue = 'com.apple.main-thread, stop reason = breakpoint 3.1
+    frame #0: 0x0000964a Hello`rb_scope__drawRect:__(self=0x08fa34d0, rect=0x08f8d8a0) + 1034 at hello_view.rb:10
+    frame #1: 0x00009d77 Hello`__unnamed_9 + 231
+    frame #2: 0x0065be43 UIKit`-[UIView(CALayerDelegate) drawLayer:inContext:] + 504
+    frame #3: 0x024bb800 QuartzCore`+[CATransaction flush] + 52
+    frame #4: 0x005eed70 UIKit`_UIApplicationHandleEvent + 683
+    frame #5: 0x03add6e1 GraphicsServices`PurpleEventCallback + 46
+    frame #6: 0x01da8ffb CoreFoundation`CFRunLoopRunInMode + 123
+    frame #7: 0x005ec8be UIKit`-[UIApplication _run] + 840
+    frame #8: 0x005eeabb UIKit`UIApplicationMain + 1225
+    frame #9: 0x000024cc Hello`main(argc=1, argv=0xbfffec0c) + 156 at main.mm:15
 ----
 
-백트레이스 프레임의 소스 코드 부분은 주소가 +rb_scope__+ 로 시작하고 파일과 줄번호 정보가 있는 줄을 보시면 됩니다.
+백트레이스 프레임의 소스 코드 부분은 주소가 +rb_scope__+ 로 시작하고 +file:line+ 정보가 있는 줄을 보시면 됩니다.
 
 Frames
 ~~~~~~
 
 백트레이스의 제일 처음 프레임은 브레이크 포인트 위치의 메소드 +drawRect:+ 입니다. 밑의 다른 프레임들은 iOS의 네이티브 콜들이네요. 보시는 것처럼 +drawRect:+ 메소드는 +UIView+ 에 의해 불리어 집니다.
 
-+frame+ 명령어로 특정 프레임으로 바꿀 수 있습니다. 기본값으로 제일 위의 프레임(#0)으로 바꾸지만, 컨택스트를 살펴보기위해 프레임 #4로 바꾸길 원한다면, 다음 명령어로 할 수 있습니다.
++frame+ 명령어로 특정 프레임으로 바꿀 수 있습니다. 기본값으로 제일 위의 프레임(#0)으로 바꾸지만, 컨택스트를 살펴보기위해 프레임 #2로 바꾸길 원한다면, 다음 명령어로 할 수 있습니다.
 
 ----
-(gdb) frame 4
-[...]
+(lldb) frame select 2
+frame #2: 0x0065be43 UIKit`-[UIView(CALayerDelegate) drawLayer:inContext:] + 504
+UIKit`-[UIView(CALayerDelegate) drawLayer:inContext:] + 504:
+-> 0x65be43:  calll  0x6156b5                  ; UIGraphicsPopContext
+   0x65be48:  addl   $108, %esp
+   0x65be4b:  popl   %esi
+   0x65be4c:  popl   %edi
 ----
 
-당연히 백트레이스의 Ruby로 정의된 부분으로 들어갈 때 주로 사용됩니다.
+당연히 백트레이스의 Ruby로 정의된 부분으로 들어갈 때 주로 사용됩니다. 아니면 
 
 Threads
 ~~~~~~~
 
-+backtrace+ 명령어는 현재 쓰레드의 백트레이스만 반환합니다. 멀티쓰레드 프로그램을 다룬다면, 전채 쓰레드의 백트레이스가 필요할때가 있습니다. 예를 들어 경주의 상태를 디버깅 할 경우가 있죠.
++thread backtrace+ 명령어는 현재 쓰레드의 백트레이스만 반환합니다. 멀티쓰레드 프로그램을 다룬다면, 전채 쓰레드의 백트레이스가 필요할때가 있습니다. 예를 들어 경주의 상태를 디버깅 할 경우가 있죠.
 
 다음 명령어는 터미널에서 실행되는 모든 쓰레드의 백트레이스를 출력합니다.
 
 ----
-(gdb) thread apply all backtrace
-[...]
+(lldb) thread backtrace all
+* thread #1: tid = 0x36e013, 0x0000964a Hello`rb_scope__drawRect:__(self=0x08fa34d0, rect=0x08f8d8a0) + 1034 at hello_view.rb:10, queue = 'com.apple.main-thread, stop reason = breakpoint 3.1
+    frame #0: 0x0000964a Hello`rb_scope__drawRect:__(self=0x08fa34d0, rect=0x08f8d8a0) + 1034 at hello_view.rb:10
+    frame #1: 0x00009d77 Hello`__unnamed_9 + 231
+    frame #2: 0x0065be43 UIKit`-[UIView(CALayerDelegate) drawLayer:inContext:] + 504
+    frame #3: 0x024bb800 QuartzCore`+[CATransaction flush] + 52
+    frame #4: 0x005eed70 UIKit`_UIApplicationHandleEvent + 683
+    frame #5: 0x03add6e1 GraphicsServices`PurpleEventCallback + 46
+    frame #6: 0x01da8ffb CoreFoundation`CFRunLoopRunInMode + 123
+    frame #7: 0x005ec8be UIKit`-[UIApplication _run] + 840
+    frame #8: 0x005eeabb UIKit`UIApplicationMain + 1225
+    frame #9: 0x000024cc Hello`main(argc=1, argv=0xbfffec0c) + 156 at main.mm:15
+
+  thread #2: tid = 0x36e04e, 0x031bf992 libsystem_kernel.dylib`kevent64 + 10, queue = 'com.apple.libdispatch-manager
+    frame #0: 0x031bf992 libsystem_kernel.dylib`kevent64 + 10
+    frame #1: 0x02de018e libdispatch.dylib`_dispatch_mgr_invoke + 238
+    frame #2: 0x02ddfeca libdispatch.dylib`_dispatch_mgr_thread + 60
+
+  thread #3: tid = 0x36e04f, 0x031bf046 libsystem_kernel.dylib`__workq_kernreturn + 10
+    frame #0: 0x031bf046 libsystem_kernel.dylib`__workq_kernreturn + 10
+    frame #1: 0x03182dcf libsystem_pthread.dylib`_pthread_wqthread + 372
+
+  thread #4: tid = 0x36e050, 0x031bdd2e libsystem_kernel.dylib`accept$UNIX2003 + 10
+    frame #0: 0x031bdd2e libsystem_kernel.dylib`accept$UNIX2003 + 10
+    frame #1: 0x001397b6 Hello`-[RMREPL start] + 134
+    frame #2: 0x015567a7 Foundation`-[NSThread main] + 76
+    frame #3: 0x01556706 Foundation`__NSThread__main__ + 1275
+    frame #4: 0x031815fb libsystem_pthread.dylib`_pthread_body + 144
+    frame #5: 0x03181485 libsystem_pthread.dylib`_pthread_start + 130
 ----
 
-디버거에서 프레임 전환과 같은 방식으로, +thread+ 명령어를 사용해 쓰레드를 전환 할수 있습니다. 실행된 다른 쓰레드에서 사용되는 루비 메소드를 살펴보려 할때 유용하겠죠. 다음 명령어는 디버거 프롬프트를 쓰레드 #4로 이동합니다.
+디버거에서 프레임 전환과 같은 방식으로, +thread select+ 명령어를 사용해 쓰레드를 전환 할수 있습니다. 실행된 다른 쓰레드에서 사용되는 루비 메소드를 살펴보려 할때 유용하겠죠. 다음 명령어는 디버거 프롬프트를 쓰레드 #4로 이동합니다.
 
 ----
-(gdb) thread 4
-[...]
+(lldb) thread select 4
+* thread #4: tid = 0x36e050, 0x031bdd2e libsystem_kernel.dylib`accept$UNIX2003 + 10
+    frame #0: 0x031bdd2e libsystem_kernel.dylib`accept$UNIX2003 + 10
+libsystem_kernel.dylib`accept$UNIX2003 + 10:
+-> 0x31bdd2e:  jae    0x31bdd3e                 ; accept$UNIX2003 + 26
+   0x31bdd30:  calll  0x31bdd35                 ; accept$UNIX2003 + 17
+   0x31bdd35:  popl   %edx
+   0x31bdd36:  movl   29423(%edx), %edx
 ----
 
 Inspecting objects
@@ -181,34 +224,42 @@ RubyMotion에서 +self+ 인자는 메소드의 수신자를 참조하는 루비�
 +print-ruby-object+ 명령어를 이용해 +self+ 와 +rect+ 의 값들을 살펴볼 수 있습니다. 이 RubyMotion에서 정의된 명령어는 해당 객채에 +inspect+ 메소드를 호출해 그 결과를 돌려줍니다. 이 명령어는 편의를 위해 단축명령 +pro+ 로도 부를 수 있습니다.
 
 ----
-Breakpoint 4, rb_scope__drawRect:__ (self=0x43a00003, rect=0x9353a10) at hello_view.rb:10
-10            bgcolor = UIColor.blackColor
-(gdb) print-ruby-object self
-#<HelloView:0x934d580>
-(gdb) pro rect
-#<CGRect origin=#<CGPoint x=0.0 y=0.0> size=#<CGSize width=320.0 height=480.0>>
+frame #0: 0x0000964a Hello`rb_scope__drawRect:__(self=0x08fa34d0, rect=0x08f8d8a0) + 1034 at hello_view.rb:10
+   7   	      end
+   8   	      text = "ZOMG!"
+   9   	    else
+-> 10  	      bgcolor = UIColor.blackColor
+   11  	      text = @touches ? "Touched #{@touches} times!" : "Hello RubyMotion!"
+   12  	    end
+   13  	
+(lldb) print-ruby-object self
+#<HelloView:0x8fa34d0>
+(lldb) pro rect
+#<CGRect origin=#<CGPoint x=0.0 y=0.0> size=#<CGSize width=320.0 height=568.0>>
 ----
 
-지역변수의 목록은 +info locals+ 명령어로 출력할 수 있습니다. 목록에는 지역변수의 어드레스 정보도 나옵니다.
+지역변수의 목록은 +frame variable+ 명령어로 출력할 수 있습니다. 목록에는 지역변수의 어드레스 정보도 나옵니다.
 
 ----
-(gdb) info locals
-bgcolor = (VALUE) 0x75a81d0
-red = (VALUE) 0x4
-green = (VALUE) 0x4
-blue = (VALUE) 0x4
-text = (VALUE) 0x75a9020
-font = (VALUE) 0x4
+(lldb) frame variable
+(void *) self = 0x08fa34d0
+(void *) rect = 0x08f8d8a0
+(void *) bgcolor = 0x08f931c0
+(void *) red = 0x00000004
+(void *) green = 0x00000004
+(void *) blue = 0x00000004
+(void *) text = 0x09c55230
+(void *) font = 0x00000004
 ----
 
 지역 변수들은 +pro+ 명령어를 이용해 각각 살펴 볼 수 있습니다.
 
 ----
-(gdb) pro bgcolor
-#<UICachedDeviceWhiteColor:0x75a81d0>
-(gdb) pro text
+(lldb) pro bgcolor
+#<UICachedDeviceWhiteColor:0x8f931c0>
+(lldb) pro text
 "Hello RubyMotion!"
-(gdb) pro font
+(lldb) pro font
 nil
 ----
 
@@ -220,54 +271,65 @@ Instance variables
 인자를 두개 넘긴다면, 첫번째 인자는 인스턴스 변수를 찾을 객체가 되고, 두번째 인자는 찾으려는 인스턴스 변수를 나타내는 스트링이 됩니다. 이름에 +@+ 가 있는지 확인하세요.
 
 ----
-(gdb) pri self "@touches"
+(lldb) pri self "@touches"
 2
 ----
 
 인자를 하나만 사용해 부른다면, 명령어는 +self+ 에서 주어진 인스턴스 변수를 찾습니다.
 
 ----
-(gdb) pri "@touches"
+(lldb) pri "@touches"
 2
 ----
 
 Control flow
 ------------
 
-+next+ 명령어는 다음 소스레벨 위치가 나올때까지 진행하게 합니다. 이 다음 위치는 보통 루비 소스코드의 바로 밑 줄입니다. 터미널에서 관련된 소스 코드 라인을 확인 할 수 있습니다.
++next+ 명령어는 다음 소스레벨 위치가 나올때까지 진행하게 합니다. 이 다음 위치는 보통 루비 소스코드의 바로 밑 줄입니다. 이 말은 화면에 표시되는 현재 줄은 아직 실행되지 않았다는 뜻입니다. 변수와 값을 살펴볼 때는 이 점에 주의합시다.
 
 ----
-(gdb) next
-15	    UIBezierPath.bezierPathWithRect(frame).fill
-(gdb) next
-17	    font = UIFont.systemFontOfSize(24)
-(gdb) next
-18	    UIColor.whiteColor.set
-(gdb) next
-19	    text.drawAtPoint(CGPoint.new(10, 20), withFont:font)
+* thread #1: tid = 0x3702a0, 0x0000964a Hello`rb_scope__drawRect:__(self=0x08ed1600, rect=0x08d91620) + 1034 at hello_view.rb:10, queue = 'com.apple.main-thread, stop reason = breakpoint 3.1
+    frame #0: 0x0000964a Hello`rb_scope__drawRect:__(self=0x08ed1600, rect=0x08d91620) + 1034 at hello_view.rb:10
+   7   	      end
+   8   	      text = "ZOMG!"
+   9   	    else
+-> 10  	      bgcolor = UIColor.blackColor
+   11  	      text = @touches ? "Touched #{@touches} times!" : "Hello RubyMotion!"
+   12  	    end
+   13  	
+(lldb) next
+Process 87162 stopped
+* thread #1: tid = 0x3702a0, 0x000096c9 Hello`rb_scope__drawRect:__(self=0x08ed1600, rect=0x08d91620) + 1161 at hello_view.rb:11, queue = 'com.apple.main-thread, stop reason = step over
+    frame #0: 0x000096c9 Hello`rb_scope__drawRect:__(self=0x08ed1600, rect=0x08d91620) + 1161 at hello_view.rb:11
+   8   	      text = "ZOMG!"
+   9   	    else
+   10  	      bgcolor = UIColor.blackColor
+-> 11  	      text = @touches ? "Touched #{@touches} times!" : "Hello RubyMotion!"
+   12  	    end
+   13  	
+   14  	    bgcolor.set 
 ----
 
 +continue+ 명령어는 브레이크 포인트가 나올때까지 실행을 진행합니다.
 
 ----
-(gdb) continue
-[...]
+(lldb) continue
+Process 87162 resuming
 ----
 
 프로그램이 실행될때, 언제든 키보드 단축키 +control+c+ (+^C+) 로 실행을 멈추고 디버거 프롬프트로 돌아갈 수 있습니다.
 
 ----
 ^C
-Program received signal SIGINT, Interrupt.
-0x910217d2 in mach_msg_trap ()
-(gdb)
+Process 87162 stopped
+[...]
+(lldb)
 ----
 
 디버거를 종료하려면, +quit+ 명령어를 입력하고 +y+ 를 입력하시면 됩니다. 이 명령어는 어플리케이션을 종료하고 셸 프롬프트를 돌려줍니다.
 
 ----
-(gdb) quit
-The program is running.  Quit anyway (and detach it)? (y or n) y
-Detaching from process 91850.
+(lldb) quit
+Quitting LLDB will detach from one or more processes. Do you really want to proceed: [Y/n] y
 $
 ----
