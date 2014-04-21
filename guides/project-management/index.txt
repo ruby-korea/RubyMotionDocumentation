@@ -115,6 +115,8 @@ OS X Options
 |+copyright+| The human-readable copyright that will be used in the application's property file, as a +String+. The default value is +"Copyright (c) CURRENT_DATE CURRENT_USER. All Right Reserved."+.
 |+embedded_frameworks+| List of 3rd-party frameworks to embed in the application bundle, as an +Array+ of +String+ objects representing filesystem paths. For example, +["../MyFramework/framework"]+. The default value is an empty array.
 |+external_frameworks+| List of frameworks to use that are outside of +/System/Library/Frameworks+ and should not be embedded, as an +Array+ of +String+ objects representing filesystem paths. For example, +["/Library/Frameworks/iTunesLibrary.framework"]+. The default value is an empty array.
+|+codesign_for_development+| Whether it codesigns the application for development build. If +false+, it skips codesigning. The default value is +false+.
+|+codesign_for_release+| Whether it codesigns the application for release build. If +false+, it skips codesigning. The default value is +true+.
 |====
 
 Providing Custom Values
@@ -175,15 +177,17 @@ Here is a table summarizing project types and key/value objects.
 [cols=".^,.^,.^",options="header,autowidth"]
 |====
 | Project Type | Key | Discussion
-.6+|+:xcode+ | +:xcodeproj+ | Name of the Xcode project file to use. Optional if there is one '.xcodeproj' file in the directory.
+.7+|+:xcode+ | +:xcodeproj+ | Name of the Xcode project file to use. Optional if there is one '.xcodeproj' file in the directory.
 | +:target+ | Name of the target to build. If not provided, the default target will be used. Cannot be defined at the same time as +:scheme+.
 | +:scheme+ | Name of the scheme to build. If not provided, the default scheme will be used. Cannot be defined at the same time as +:target+.
 | +:configuration+ | Name of the configuration to build. If not provided, +"Release"+ will be used.
 | +:headers_dir+ | Path to the directory that contains public headers files, declaring APIs that will be used by the RubyMotion project. The path should be relative to the path provided to +vendor_project+, for example +"Sources/Headers"+. This key is optional.
 | +:products+ | An +Array+ containing the names of products to use in the RubyMotion project, for example +["libfoo.a"]+. This key can be used when the project builds more than one product and you want to filter what will be used by the app. If not provided, all +.a+ libraries built will be used.
-.3+| +:static+ | +:products+ | An +Array+ containing the names of static libraries to use. The default value is the list of all '.a' files in the vendor project directory.
+| +:bridgesupport_cflags+ | +CFLAGS+ to use when generating BridgeSupport metadata, for example +"-fobjc-arc"+ to turn on ARC. This key is optional.
+.4+| +:static+ | +:products+ | An +Array+ containing the names of static libraries to use. The default value is the list of all '.a' files in the vendor project directory.
 | +:source_files+ | An +Array+ of all source files and headers to compile. The default value is the list of all files in the vendor project directory matching +$$"**/*.{c,m,cpp,cxx,mm,h}"$$+.
 | +:cflags+ | +CFLAGS+ to use for compilation, for example +"-fobjc-arc"+ to turn on ARC. This key is optional.
+| +:bridgesupport_cflags+ | +CFLAGS+ to use specifically when generating BridgeSupport metadata, for example +"-fobjc-arc"+ to turn on ARC. This key is optional and defaults to +:cflags+.
 |====
 
 Continuing our example from above, assuming our video player project wants to make use of the OAuth2Client 3rd-party library, a 'vendor' directory would be created and the OAuth2Client source code would be added there.

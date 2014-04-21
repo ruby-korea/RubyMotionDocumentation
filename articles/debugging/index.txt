@@ -15,9 +15,7 @@ LLDB는 보통 C기반 언어들의 디버그 프로그램입니다만, RubyMoti
 
 NOTE: 지금의 LLDB지원은 실험적이고 꽤나 저레벨입니다. 개발진의 목표는 루비 개발자들에게 좀더 나은 사용자 경험을 제공하도록 좀 더 우호적이고 고레벨인 디버거를 만드는 것입니다.
 
-이 문서는 LLDB로 RubyMotion 앱을 디버깅하기위한 주요 기능들에 초점을 맞추었습니다. 이 문서는 LLDB의 전채 매뉴얼이 아닙니다. 추가적인 가이드가 필요할 경우 http://lldb.llvm.org/tutorial.html[the official LLDB documentation] 를 읽는 것을 추천드립니다.
-
-NOTE: 이 가이드에서는 모든 디버그 명령어의 긴 이름을 사용할 것 입니다. 짧은 이름의 명령어는 http://lldb.llvm.org/tutorial.html[the official LLDB documentation] 에서 찾으실 수 있습니다.
+이 문서는 LLDB로 RubyMotion 앱을 디버깅하기위한 주요 기능들에 초점을 맞추었습니다. 이 문서는 LLDB의 전채 매뉴얼이 아닙니다. 추가적인 가이드가 필요할 경우 http://lldb.llvm.org/tutorial.html[LLDB 공식 문서] 를 읽는 것을 추천드립니다.
 
 Debugging symbols
 -----------------
@@ -104,7 +102,6 @@ Current breakpoints:
   3.1: where = Hello`rb_scope__drawRect:__ + 1034 at hello_view.rb:10, address = 0x0000964a, resolved, hit count = 1 
 ----
 
-
 보시는 것 처럼 +hello_view.rb:10+ 브레이크 포인트가 있고 활성상태인것을 알 수 있습니다. +breakpoint enable+ 과 +breakpoint disable+ 명령어는 숫자를 사용해 브레이크 포인트를 각기 활성 / 비활성 상태로 만듭니다.
 
 위의 브레이크 포인트는 목록에서 3번이므로, 이렇게 비활성화 할 수 있습니다.
@@ -136,14 +133,14 @@ Getting the backtrace
     frame #9: 0x000024cc Hello`main(argc=1, argv=0xbfffec0c) + 156 at main.mm:15
 ----
 
-백트레이스 프레임의 소스 코드 부분은 주소가 +rb_scope__+ 로 시작하고 +file:line+ 정보가 있는 줄을 보시면 됩니다.
+백트레이스 프레임의 소스 코드 부분은 주소가 +rb_scope__+ 로 시작하고 파일과 줄번호 ( +file:line+ ) 정보가 있는 줄을 보시면 됩니다.
 
 Frames
 ~~~~~~
 
 백트레이스의 제일 처음 프레임은 브레이크 포인트 위치의 메소드 +drawRect:+ 입니다. 밑의 다른 프레임들은 iOS의 네이티브 콜들이네요. 보시는 것처럼 +drawRect:+ 메소드는 +UIView+ 에 의해 불리어 집니다.
 
-+frame+ 명령어로 특정 프레임으로 바꿀 수 있습니다. 기본값으로 제일 위의 프레임(#0)으로 바꾸지만, 컨택스트를 살펴보기위해 프레임 #2로 바꾸길 원한다면, 다음 명령어로 할 수 있습니다.
++frame+ 명령어로 백트레이스의 특정 프레임으로 바꿀 수 있습니다. 기본값으로 제일 위의 프레임(#0)으로 바꾸지만, 컨택스트를 살펴보기위해 프레임 #2로 바꾸길 원한다면, 다음 명령어로 할 수 있습니다.
 
 ----
 (lldb) frame select 2
@@ -155,7 +152,7 @@ UIKit`-[UIView(CALayerDelegate) drawLayer:inContext:] + 504:
    0x65be4c:  popl   %edi
 ----
 
-당연히 백트레이스의 Ruby로 정의된 부분으로 들어갈 때 주로 사용됩니다. 아니면 
+당연히 백트레이스의 Ruby로 정의된 부분으로 들어갈 때 주로 사용됩니다. 아니면 위의 예제 처럼 어셈블리만 보겠죠.
 
 Threads
 ~~~~~~~
@@ -238,7 +235,7 @@ frame #0: 0x0000964a Hello`rb_scope__drawRect:__(self=0x08fa34d0, rect=0x08f8d8a
 #<CGRect origin=#<CGPoint x=0.0 y=0.0> size=#<CGSize width=320.0 height=568.0>>
 ----
 
-지역변수의 목록은 +frame variable+ 명령어로 출력할 수 있습니다. 목록에는 지역변수의 어드레스 정보도 나옵니다.
+지역변수의 목록은 +info locals+ 명령어로 출력할 수 있습니다. 목록에는 지역변수의 어드레스 정보도 나옵니다.
 
 ----
 (lldb) frame variable
@@ -285,7 +282,7 @@ Instance variables
 Control flow
 ------------
 
-+next+ 명령어는 다음 소스레벨 위치가 나올때까지 진행하게 합니다. 이 다음 위치는 보통 루비 소스코드의 바로 밑 줄입니다. 이 말은 화면에 표시되는 현재 줄은 아직 실행되지 않았다는 뜻입니다. 변수와 값을 살펴볼 때는 이 점에 주의합시다.
++next+ 명령어는 다음 소스레벨 위치가 나올때까지 진행하게 합니다. 이 다음 위치는 보통 루비 소스코드의 바로 밑 줄입니다. 이 말은 디버거가 아직 현제 라인을 실행 하지 않았다는 말입니다. 값을 확인할 때 이점에 주의 하세요.
 
 ----
 * thread #1: tid = 0x3702a0, 0x0000964a Hello`rb_scope__drawRect:__(self=0x08ed1600, rect=0x08d91620) + 1034 at hello_view.rb:10, queue = 'com.apple.main-thread, stop reason = breakpoint 3.1
