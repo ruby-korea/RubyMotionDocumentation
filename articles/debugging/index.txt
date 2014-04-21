@@ -236,7 +236,7 @@ frame #0: 0x0000964a Hello`rb_scope__drawRect:__(self=0x08fa34d0, rect=0x08f8d8a
 #<CGRect origin=#<CGPoint x=0.0 y=0.0> size=#<CGSize width=320.0 height=568.0>>
 ----
 
-The list of local variables can be printed using the +info locals+ command. The list will also include the addresses of each local variable.
+지역변수의 목록은 +info locals+ 명령어로 출력할 수 있습니다. 목록에는 지역변수의 어드레스 정보도 나옵니다.
 
 ----
 (lldb) frame variable
@@ -283,7 +283,6 @@ Instance variables
 Control flow
 ------------
 
-The +next+ command will continue the execution of the program until the next source-level location. This is usually the very next line in the Ruby source code. This means that the debugger has not yet executed the line that it indicates is the current line, keep this in mind when inspecting variables and their values.
 +next+ 명령어는 다음 소스레벨 위치가 나올때까지 진행하게 합니다. 이 다음 위치는 보통 루비 소스코드의 바로 밑 줄입니다. 이 말은 디버거가 아직 현제 라인을 실행 하지 않았다는 말입니다. 값을 확인할 때 이점에 주의 하세요.
 
 ----
