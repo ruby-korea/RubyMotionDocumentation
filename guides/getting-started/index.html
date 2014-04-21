@@ -1058,6 +1058,7 @@ pre {
 <body class="article" style="max-width:55em">
 <div id="topbar" style="display: none">
 	<div class="title">
+		<!-- Don't put a space between the img and a. That will break the hover layout. -->
 		<img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAsAAAAKCAYAAAEV95QVAAAAAXNSR0IArs4c6QAAAAZiS0dEAP8A/wD/oL2nkwAAAAlwSFlzAAALEwAACxMBAJqcGAAAAAd0SU1FB9sGCRMSACDxkZwAAAAidEVYdENvbW1lbnQAQ3JlYXRlZCB3aXRoIEdJTVAgb24gYSBNYWOHqHdDAAAAZUlEQVQY032PSxbAIAjEIlfygL6ePF3UUvpzNjgSYWwqAMEhUQnANnsC7TQPeJpsVWzMuh2sog4vDTUbqP081zECrW4dtdaQGSIKlWluPyjK+VXxAz5XfcKufCzA130AfQHWB30HZxlPaP080xsAAAAASUVORK5CYII=" width="11" height="10" alt=""><a href="javascript:void(Mizuho.smoothlyScrollToToc())">Welcome to RubyMotion</a>
 	</div>
 	<a href="javascript:void(0)" id="current_section"></a>
@@ -1151,8 +1152,8 @@ pre {
 <div class="paragraph"><p>You can run the following command to check the version of RubyMotion installed on your computer.</p></div>
 <div class="listingblock">
 <div class="content monospaced">
-<pre>$ motion -v
-1.0</pre>
+<pre>$ motion --version
+2.24</pre>
 </div>
 </div>
 <div class="paragraph"><p>Once a day, the RubyMotion build system pings the software update server in order to see if a new version of RubyMotion is available to install.</p></div>

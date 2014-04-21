@@ -1058,6 +1058,7 @@ pre {
 <body class="article" style="max-width:55em">
 <div id="topbar" style="display: none">
 	<div class="title">
+		<!-- Don't put a space between the img and a. That will break the hover layout. -->
 		<img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAsAAAAKCAYAAAEV95QVAAAAAXNSR0IArs4c6QAAAAZiS0dEAP8A/wD/oL2nkwAAAAlwSFlzAAALEwAACxMBAJqcGAAAAAd0SU1FB9sGCRMSACDxkZwAAAAidEVYdENvbW1lbnQAQ3JlYXRlZCB3aXRoIEdJTVAgb24gYSBNYWOHqHdDAAAAZUlEQVQY032PSxbAIAjEIlfygL6ePF3UUvpzNjgSYWwqAMEhUQnANnsC7TQPeJpsVWzMuh2sog4vDTUbqP081zECrW4dtdaQGSIKlWluPyjK+VXxAz5XfcKufCzA130AfQHWB30HZxlPaP080xsAAAAASUVORK5CYII=" width="11" height="10" alt=""><a href="javascript:void(Mizuho.smoothlyScrollToToc())">RubyMotion Project Management Guide</a>
 	</div>
 	<a href="javascript:void(0)" id="current_section"></a>
@@ -1349,6 +1350,14 @@ $ cd Hello</pre>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><span class="monospaced">external_frameworks</span></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">List of frameworks to use that are outside of <span class="monospaced">/System/Library/Frameworks</span> and should not be embedded, as an <span class="monospaced">Array</span> of <span class="monospaced">String</span> objects representing filesystem paths. For example, <span class="monospaced">["/Library/Frameworks/iTunesLibrary.framework"]</span>. The default value is an empty array.</p></td>
 </tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><span class="monospaced">codesign_for_development</span></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Whether it codesigns the application for development build. If <span class="monospaced">false</span>, it skips codesigning. The default value is <span class="monospaced">false</span>.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><span class="monospaced">codesign_for_release</span></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Whether it codesigns the application for release build. If <span class="monospaced">false</span>, it skips codesigning. The default value is <span class="monospaced">true</span>.</p></td>
+</tr>
 </tbody>
 </table>
 </div>
@@ -1410,7 +1419,7 @@ end</pre>
 </tr></thead>
 <tbody>
 <tr>
-<td class="tableblock halign-left valign-middle" rowspan="6"><p class="tableblock"><span class="monospaced">:xcode</span></p></td>
+<td class="tableblock halign-left valign-middle" rowspan="7"><p class="tableblock"><span class="monospaced">:xcode</span></p></td>
 <td class="tableblock halign-left valign-middle"><p class="tableblock"><span class="monospaced">:xcodeproj</span></p></td>
 <td class="tableblock halign-left valign-middle"><p class="tableblock">Name of the Xcode project file to use. Optional if there is one <em>.xcodeproj</em> file in the directory.</p></td>
 </tr>
@@ -1435,7 +1444,11 @@ end</pre>
 <td class="tableblock halign-left valign-middle"><p class="tableblock">An <span class="monospaced">Array</span> containing the names of products to use in the RubyMotion project, for example <span class="monospaced">["libfoo.a"]</span>. This key can be used when the project builds more than one product and you want to filter what will be used by the app. If not provided, all <span class="monospaced">.a</span> libraries built will be used.</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-middle" rowspan="3"><p class="tableblock"><span class="monospaced">:static</span></p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock"><span class="monospaced">:bridgesupport_cflags</span></p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock"><span class="monospaced">CFLAGS</span> to use when generating BridgeSupport metadata, for example <span class="monospaced">"-fobjc-arc"</span> to turn on ARC. This key is optional.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-middle" rowspan="4"><p class="tableblock"><span class="monospaced">:static</span></p></td>
 <td class="tableblock halign-left valign-middle"><p class="tableblock"><span class="monospaced">:products</span></p></td>
 <td class="tableblock halign-left valign-middle"><p class="tableblock">An <span class="monospaced">Array</span> containing the names of static libraries to use. The default value is the list of all <em>.a</em> files in the vendor project directory.</p></td>
 </tr>
@@ -1446,6 +1459,10 @@ end</pre>
 <tr>
 <td class="tableblock halign-left valign-middle"><p class="tableblock"><span class="monospaced">:cflags</span></p></td>
 <td class="tableblock halign-left valign-middle"><p class="tableblock"><span class="monospaced">CFLAGS</span> to use for compilation, for example <span class="monospaced">"-fobjc-arc"</span> to turn on ARC. This key is optional.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-middle"><p class="tableblock"><span class="monospaced">:bridgesupport_cflags</span></p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock"><span class="monospaced">CFLAGS</span> to use specifically when generating BridgeSupport metadata, for example <span class="monospaced">"-fobjc-arc"</span> to turn on ARC. This key is optional and defaults to <span class="monospaced">:cflags</span>.</p></td>
 </tr>
 </tbody>
 </table>
