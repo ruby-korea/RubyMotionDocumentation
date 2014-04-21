@@ -20,7 +20,7 @@ Installation
 $ pod setup
 ----
 
-The http://github.com/HipByte/motion-cocoapods[RubyMotion의 CocoaPods] 도 gem으로 설치 가능합니다.
+http://github.com/HipByte/motion-cocoapods[RubyMotion의 CocoaPods] 도 gem으로 설치 가능합니다.
 
 ----
 $ sudo gem install motion-cocoapods
